@@ -56,36 +56,19 @@
         <div class="flex-news-cal">
             <section class="news-list">
                 <h2 class="section-title">Aktuality</h2>
-                <article class="news-entry">
-                    <div class="news-date">15. 05.</div>
-                    <div class="news-content">
-                        <h3><a href="aktuality.html">Výdej povolenek v náhradním termínu</a></h3>
-                        <p>Upozorňujeme členy, že příští čtvrtek proběhne mimořádný výdej...</p>
-                    </div>
-                </article>
-                <article class="news-entry">
-                    <div class="news-date">10. 05.</div>
-                    <div class="news-content">
-                        <h3><a href="aktuality.html">Zarybnění revíru – duben 2026</a></h3>
-                        <p>Do našich revírů bylo vysazeno celkem 500 kg kapra obecného...</p>
-                    </div>
-                </article>
+                
+                <div id="aktuality-list">
+                    <p>Načítám nejnovější aktuality...</p>
+                </div>
+
                 <a href="aktuality.html" class="btn-more">Všechny aktuality</a>
             </section>
 
             <aside class="calendar-aside">
                 <h2 class="section-title">Kalendář akcí</h2>
-                <div class="cal-item">
-                    <div class="cal-date"><strong>25</strong><span>kvě</span></div>
-                    <div class="cal-info">Členská schůze MO</div>
-                </div>
-                <div class="cal-item">
-                    <div class="cal-date"><strong>01</strong><span>čen</span></div>
-                    <div class="cal-info">Dětské rybářské závody</div>
-                </div>
-                <div class="cal-item">
-                    <div class="cal-date"><strong>15</strong><span>čen</span></div>
-                    <div class="cal-info">Společná brigáda - úklid</div>
+                
+                <div id="kalendar-list">
+                    <p>Načítám kalendář akcí...</p>
                 </div>
             </aside>
         </div>
@@ -96,49 +79,96 @@
             <p>&copy; 2026 ČRS MO Horní Počernice | Web pro rybáře</p>
         </div>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  // 2. Inicializace Supabase (Doplň své údaje ze Supabase -> Settings -> API)
+  // Inicializace Supabase s upraveným názvem proměnné (supabaseClient)
   const SUPABASE_URL = 'https://jyqqyzpjujgymveolupt.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_UR-OGUOpeanlhKSMomA7OQ_14A92Mog';
   
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // 3. Funkce pro načtení aktualit
+  // Pomocné pole pro české názvy měsíců v kalendáři
+  const mesice = ['led', 'úno', 'bře', 'dub', 'kvě', 'čen', 'čec', 'srp', 'zář', 'říj', 'lis', 'pro'];
+
+  // 3. Funkce pro načtení a vykreslení aktualit
   async function nactiAktuality() {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from('aktuality')
       .select('*')
-      .order('datum_pripravy', { ascending: false }); // Seřadit od nejnovějšího
+      .order('datum_publikace', { ascending: false }) // OPRAVENO: datum_publikace
+      .limit(3); // Chceme na hlavní stránce jen poslední 3
+
+    const container = document.getElementById('aktuality-list');
 
     if (error) {
       console.error('Chyba při načítání aktualit:', error);
+      container.innerHTML = '<p>Nepodařilo se načíst aktuality.</p>';
       return;
     }
 
-    console.log('Aktuality:', data);
-    // Tady pak napíšeme kód, který data vykreslí do HTML
+    if (!data || data.length === 0) {
+      container.innerHTML = '<p>Momentálně nejsou žádné nové aktuality.</p>';
+      return;
+    }
+
+    // Vyčistíme placeholder a vykreslíme data
+    container.innerHTML = '';
+    data.forEach(clanek => {
+      // Převedeme datum z DB (YYYY-MM-DD) na formát DD. MM.
+      const d = new Date(clanek.datum_publikace);
+      const naformatovaneDatum = `${String(d.getDate()).padStart(2, '0')}. ${String(d.getMonth() + 1).padStart(2, '0')}.`;
+
+      container.innerHTML += `
+        <article class="news-entry">
+            <div class="news-date">${naformatovaneDatum}</div>
+            <div class="news-content">
+                <h3><a href="aktuality.html?id=${clanek.id}">${clanek.titulek}</a></h3>
+                <p>${clanek.perex || clanek.obsah.substring(0, 120) + '...'}</p>
+            </div>
+        </article>
+      `;
+    });
   }
 
-  // 4. Funkce pro načtení kalendáře akcí
+  // 4. Funkce pro načtení a vykreslení kalendáře akcí
   async function nactiKalendar() {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from('kalendar_akci')
       .select('*')
-      .gte('datum_konani', new Date().toISOString().split('T')[0]) // Načte jen budoucí nebo dnešní akce
-      .order('datum_konani', { ascending: true }); // Seřadit od nejbližší akce
+      .gte('datum_konani', new Date().toISOString().split('T')[0]) // Pouze budoucí akce
+      .order('datum_konani', { ascending: true });
+
+    const container = document.getElementById('kalendar-list');
 
     if (error) {
       console.error('Chyba při načítání kalendáře:', error);
+      container.innerHTML = '<p>Nepodařilo se načíst kalendář.</p>';
       return;
     }
 
-    console.log('Kalendář akcí:', data);
-    // Tady pak napíšeme kód pro vykreslení kalendáře
+    if (!data || data.length === 0) {
+      container.innerHTML = '<p>Žádné plánované akce.</p>';
+      return;
+    }
+
+    container.innerHTML = '';
+    data.forEach(akce => {
+      const d = new Date(akce.datum_konani);
+      const den = d.getDate();
+      const mesic = mesice[d.getMonth()]; // Získá zkratku měsíce z pole
+
+      container.innerHTML += `
+        <div class="cal-item">
+            <div class="cal-date"><strong>${den}</strong><span>${mesic}</span></div>
+            <div class="cal-info">${akce.nazev} ${akce.cas_konani ? `<br><small><i class="fa-regular fa-clock"></i> ${akce.cas_konani.substring(0,5)}</small>` : ''}</div>
+        </div>
+      `;
+    });
   }
 
-  // Spuštění funkcí po načtení stránky
+  // Spuštění po načtení DOMu
   document.addEventListener('DOMContentLoaded', () => {
     nactiAktuality();
     nactiKalendar();
