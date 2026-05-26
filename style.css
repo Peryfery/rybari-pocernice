@@ -108,15 +108,20 @@ nav a.active { color: #d4a373; }
 }
 
 .link-card {
+    display: flex;
+    flex-direction: column;  /* Seřadí ikonu a text pod sebe */
+    align-items: center;      /* Vycentruje je horizontálně */
+    justify-content: center;   /* Vycentruje je vertikálně */
     background: white;
     border: 1px solid var(--border-gray);
-    padding: 20px;
+    padding: 25px 20px;
     text-align: center;
     text-decoration: none;
     color: var(--text-dark);
     font-weight: bold;
     transition: 0.3s;
     border-radius: 4px;
+    min-height: 180px;
 }
 
 .link-card:hover {
@@ -126,9 +131,10 @@ nav a.active { color: #d4a373; }
 }
 
 .link-card img {
-    width: 100px; /* Zvětšeno pro lepší formát */
-    height: 100px;
-    margin: 0 auto 15px; /* Vycentrováno */
+    width: 70px;              /* Optimální velikost pro Flaticon ikonu */
+    height: 70px;
+    object-fit: contain;
+    margin-bottom: 15px;
 }
 
 /* NEWS & CALENDAR FLEX */
