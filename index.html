@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ČRS MO Horní Počernice - Úvod</title>
+    <title>ČRS MO Horní Počernice - Oficiální web</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <div class="container">
-            <h1>ČRS MO Horní Počernice</h1>
+        <div class="container header-flex">
+            <div class="logo-area">
+                <h1>Český rybářský svaz</h1>
+                <span>MO Horní Počernice</span>
+            </div>
             <nav>
                 <a href="index.html" class="active">Úvod</a>
                 <a href="aktuality.html">Aktuality</a>
@@ -19,37 +23,77 @@
     </header>
 
     <div class="main-banner">
-        <img src="header.png" alt="Rybář při východu slunce na rybníku" class="banner-image">
+        <img src="header.png" alt="Rybářský revír" class="banner-image">
+        <div class="banner-overlay">
+            <h2>Místní organizace Horní Počernice</h2>
+            <p>Petrův zdar všem přátelům cechu rybářského!</p>
+        </div>
     </div>
 
     <main class="container">
-        <section class="hero">
-            <h2>Petrův zdar!</h2>
-            <p>Vítejte na oficiálním webovém návrhu naší Místní organizace Českého rybářského svazu Praha 9 - Horní Počernice. Jsme aktivní komunita rybářů, která pečuje o místní revíry, vede kroužky mládeže a organizuje společné akce.</p>
+        <section class="quick-links">
+            <h2 class="section-title">Co u nás můžete vyřídit?</h2>
+            <div class="grid-links">
+                <a href="#" class="link-card">
+                    <img src="icon-povolenka.png" alt="Povolenky">
+                    <span>Povolenky k lovu</span>
+                </a>
+                <a href="#" class="link-card">
+                    <img src="icon-clenstvi.png" alt="Členství">
+                    <span>Členství v ČRS</span>
+                </a>
+                <a href="#" class="link-card">
+                    <img src="icon-brigady.png" alt="Brigády">
+                    <span>Plnění brigád</span>
+                </a>
+                <a href="#" class="link-card">
+                    <img src="icon-zkousky.png" alt="Zkoušky">
+                    <span>Zkoušky a mládež</span>
+                </a>
+            </div>
         </section>
 
-        <section class="features">
-            <div class="card">
-                <img src="card-reviry.png" alt="Zlatý kapr mezi lekníny" class="card-icon">
-                <h3>Naše revíry</h3>
-                <p>Pečujeme o chovné i sportovní vodní plochy v okolí Horních Počernic. Naším cílem je zdravé rybí prostředí a čisté břehy.</p>
-            </div>
-            <div class="card">
-                <img src="card-mladez.png" alt="Dlaň vedoucí ruku dítěte na prutu" class="card-icon">
-                <h3>Kroužek mládeže</h3>
-                <p>Vychováváme novou generaci rybářů. Učíme děti teorii, ekologii i praktický lov ryb formou zábavných setkání.</p>
-            </div>
-            <div class="card">
-                <img src="card-clenstvi.png" alt="Rybářské náčiní a zápisník" class="card-icon">
-                <h3>Členství</h3>
-                <p>Informace o výdeji povolenek, plnění brigádnických povinností a členských příspěvcích pro aktuální sezónu.</p>
-            </div>
-        </section>
+        <div class="flex-news-cal">
+            <section class="news-list">
+                <h2 class="section-title">Aktuality</h2>
+                <article class="news-entry">
+                    <div class="news-date">15. 05.</div>
+                    <div class="news-content">
+                        <h3><a href="aktuality.html">Výdej povolenek v náhradním termínu</a></h3>
+                        <p>Upozorňujeme členy, že příští čtvrtek proběhne mimořádný výdej...</p>
+                    </div>
+                </article>
+                <article class="news-entry">
+                    <div class="news-date">10. 05.</div>
+                    <div class="news-content">
+                        <h3><a href="aktuality.html">Zarybnění revíru – duben 2026</a></h3>
+                        <p>Do našich revírů bylo vysazeno celkem 500 kg kapra obecného...</p>
+                    </div>
+                </article>
+                <a href="aktuality.html" class="btn-more">Všechny aktuality</a>
+            </section>
+
+            <aside class="calendar-aside">
+                <h2 class="section-title">Kalendář akcí</h2>
+                <div class="cal-item">
+                    <div class="cal-date"><strong>25</strong><span>kvě</span></div>
+                    <div class="cal-info">Členská schůze MO</div>
+                </div>
+                <div class="cal-item">
+                    <div class="cal-date"><strong>01</strong><span>čen</span></div>
+                    <div class="cal-info">Dětské rybářské závody</div>
+                </div>
+                <div class="cal-item">
+                    <div class="cal-date"><strong>15</strong><span>čen</span></div>
+                    <div class="cal-info">Společná brigáda - úklid</div>
+                </div>
+            </aside>
+        </div>
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 ČRS MO Horní Počernice. Všechna práva vyhrazena.</p>
+            <p>&copy; 2026 ČRS MO Horní Počernice | Web pro rybáře</p>
         </div>
     </footer>
 </body>
