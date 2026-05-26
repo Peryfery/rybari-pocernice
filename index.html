@@ -96,5 +96,53 @@
             <p>&copy; 2026 ČRS MO Horní Počernice | Web pro rybáře</p>
         </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // 2. Inicializace Supabase (Doplň své údaje ze Supabase -> Settings -> API)
+  const SUPABASE_URL = 'https://jyqqyzpjujgymveolupt.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_UR-OGUOpeanlhKSMomA7OQ_14A92Mog';
+  
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // 3. Funkce pro načtení aktualit
+  async function nactiAktuality() {
+    const { data, error } = await supabase
+      .from('aktuality')
+      .select('*')
+      .order('datum_pripravy', { ascending: false }); // Seřadit od nejnovějšího
+
+    if (error) {
+      console.error('Chyba při načítání aktualit:', error);
+      return;
+    }
+
+    console.log('Aktuality:', data);
+    // Tady pak napíšeme kód, který data vykreslí do HTML
+  }
+
+  // 4. Funkce pro načtení kalendáře akcí
+  async function nactiKalendar() {
+    const { data, error } = await supabase
+      .from('kalendar_akci')
+      .select('*')
+      .gte('datum_konani', new Date().toISOString().split('T')[0]) // Načte jen budoucí nebo dnešní akce
+      .order('datum_konani', { ascending: true }); // Seřadit od nejbližší akce
+
+    if (error) {
+      console.error('Chyba při načítání kalendáře:', error);
+      return;
+    }
+
+    console.log('Kalendář akcí:', data);
+    // Tady pak napíšeme kód pro vykreslení kalendáře
+  }
+
+  // Spuštění funkcí po načtení stránky
+  document.addEventListener('DOMContentLoaded', () => {
+    nactiAktuality();
+    nactiKalendar();
+  });
+</script>
 </body>
 </html>
