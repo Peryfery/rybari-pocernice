@@ -1,164 +1,213 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+:root {
+    --primary-green: #1e4d2b; /* Tmavá přírodní zelená */
+    --accent-green: #2d6a3e;
+    --light-gray: #f8f9fa;
+    --border-gray: #dee2e6;
+    --text-dark: #212529;
 }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background-color: #f4f7f6;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: var(--text-dark);
+    line-height: 1.5;
+    background-color: #fff;
 }
+
 .container {
-    max-width: 1000px;
+    max-width: 1140px;
     margin: 0 auto;
     padding: 0 20px;
 }
+
+/* HEADER - ve stylu rybsvaz.cz */
 header {
-    background-color: #c9f2e5;
-    color: #fff;
-    padding: 20px 0;
+    background-color: var(--primary-green);
+    color: white;
+    padding: 15px 0;
+    border-bottom: 4px solid #d4a373; /* Zlatavý akcent */
 }
-header .container {
+
+.header-flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
 }
-header h1 {
-    font-size: 1.5rem;
+
+.logo-area h1 {
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
+
+.logo-area span {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
 nav a {
-    color: #fff;
+    color: white;
     text-decoration: none;
     margin-left: 20px;
-    padding: 6px 12px;
-    border-radius: 4px;
-    transition: background 0.3s;
-}
-nav a:hover, nav a.active {
-    background-color: #2b6cb0;
+    font-weight: 500;
+    font-size: 0.95rem;
 }
 
-/* NOVÉ: Styly pro velký banner */
+nav a.active { color: #d4a373; }
+
+/* BANNER */
 .main-banner {
-    width: 100%;
-    max-height: 400px; /* Omezíme výšku, aby nezabral celou obrazovku */
-    overflow: hidden;
     position: relative;
-    border-bottom: 5px solid #2b6cb0;
+    height: 350px;
+    overflow: hidden;
 }
+
 .banner-image {
     width: 100%;
-    height: auto;
-    object-fit: cover; /* Zajistí správné oříznutí na různých displejích */
-    display: block;
-}
-
-main {
-    padding: 40px 0;
-}
-.hero {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    margin-bottom: 30px;
-    text-align: center; /* Vycentrovat úvodní text */
-}
-.hero h2 {
-    color: #2b6cb0;
-    margin-bottom: 15px;
-}
-.features {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-.card {
-    flex: 1;
-    min-width: 280px;
-    background: #fff;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    border-top: 4px solid #2b6cb0;
-    text-align: center; /* Vycentrovat obsah karet */
-}
-
-/* NOVÉ: Styly pro kulaté ikonky v kartách */
-.card-icon {
-    width: 100px;
-    height: 100px;
+    height: 100%;
     object-fit: cover;
-    border-radius: 50%; /* Udělá obrázek kulatý */
-    margin-bottom: 15px;
-    border: 3px solid #f4f7f6;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.card h3 {
-    margin-bottom: 12px;
-    color: #1a365d;
+.banner-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    padding: 40px 20px;
+    color: white;
 }
-.news-item {
-    background: #fff;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
+
+.banner-overlay h2 { font-size: 2rem; }
+
+/* SEKCE POTŘEBUJI VYŘÍDIT */
+.quick-links {
+    padding: 40px 0;
+    background-color: var(--light-gray);
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border-gray);
+    width: 100vw; /* Roztažení přes celou šířku */
+    margin-left: calc(-50vw + 50%);
 }
-.news-item h3 {
-    color: #1a365d;
+
+.section-title {
+    font-size: 1.5rem;
+    color: var(--primary-green);
+    margin-bottom: 25px;
+    border-left: 5px solid var(--primary-green);
+    padding-left: 15px;
+    margin-left: 20px;
 }
-.news-item .date {
-    font-size: 0.85rem;
-    color: #718096;
-    display: block;
-    margin-bottom: 12px;
+
+.grid-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+    max-width: 1140px;
+    margin: 0 auto;
 }
-.contact-grid {
+
+.link-card {
+    background: white;
+    border: 1px solid var(--border-gray);
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: bold;
+    transition: 0.3s;
+    border-radius: 4px;
+}
+
+.link-card:hover {
+    border-color: var(--primary-green);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+}
+
+.link-card img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+}
+
+/* NEWS & CALENDAR FLEX */
+.flex-news-cal {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.news-list { flex: 2; }
+.calendar-aside { flex: 1; }
+
+.news-entry {
     display: flex;
     gap: 20px;
-    flex-wrap: wrap;
-}
-.contact-card {
-    flex: 1;
-    min-width: 280px;
-    background: #fff;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-.contact-card h3 {
-    color: #2b6cb0;
-    margin-bottom: 12px;
-    margin-top: 15px;
-}
-.contact-card h3:first-child {
-    margin-top: 0;
-}
-footer {
-    background-color: #2d3748;
-    color: #a0aec0;
-    text-align: center;
     padding: 20px 0;
-    margin-top: 40px;
-    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border-gray);
 }
 
-/* Responzivita: Mobilní zobrazení */
-@media (max-width: 600px) {
-    header .container {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-    nav a {
-        margin: 0 5px;
-    }
-    /* Zmenšíme banner na mobilu, aby necpal obsah dolů */
-    .main-banner {
-        max-height: 200px;
-    }
+.news-date {
+    background: var(--light-gray);
+    color: var(--primary-green);
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 4px;
+    height: fit-content;
+}
+
+.news-content h3 a {
+    color: var(--text-dark);
+    text-decoration: none;
+}
+
+.news-content h3 a:hover { color: var(--accent-green); }
+
+.btn-more {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--primary-green);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* CALENDAR STYLES */
+.cal-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: var(--light-gray);
+    border-radius: 4px;
+}
+
+.cal-date {
+    background: white;
+    border: 1px solid var(--border-gray);
+    padding: 5px;
+    text-align: center;
+    min-width: 50px;
+    border-radius: 4px;
+}
+
+.cal-date strong { display: block; font-size: 1.2rem; color: var(--primary-green); }
+.cal-date span { font-size: 0.7rem; text-transform: uppercase; }
+
+footer {
+    background: var(--primary-green);
+    color: white;
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 60px;
+}
+
+/* MOBILNÍ VERZE */
+@media (max-width: 768px) {
+    .flex-news-cal { flex-direction: column; }
+    .header-flex { flex-direction: column; text-align: center; gap: 15px; }
+    nav a { margin: 0 10px; }
 }
