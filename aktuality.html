@@ -5,11 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aktuality - ČRS MO Horní Počernice</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Specifické styly pro výpis kompletních článků pod sebou */
+        .archiv-stream {
+            display: flex;
+            flex-direction: column;
+            gap: 40px; /* Mezera mezi články */
+            margin-top: 30px;
+        }
+        .full-article-card {
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+            border: 1px solid #eef2f0;
+        }
+        .article-meta {
+            display: inline-block;
+            background: #2e5a44;
+            color: #ffffff;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        .full-article-card h2 {
+            color: #1a3326;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+        .article-image {
+            width: 100%;
+            max-height: 450px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .article-perex {
+            font-size: 1.15rem;
+            color: #4a5568;
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            border-left: 4px solid #2e5a44;
+            padding-left: 15px;
+        }
+        .article-body {
+            font-size: 1.05rem;
+            color: #2d3748;
+            line-height: 1.8;
+            white-space: pre-line; /* Zachová zalomení řádků (odstavečky) ze Supabase */
+        }
+    </style>
 </head>
 <body>
     <header>
-        <div class="container">
-            <h1>ČRS MO Horní Počernice</h1>
+        <div class="container header-flex">
+            <div class="logo-area">
+                <h1>Český rybářský svaz</h1>
+                <span>MO Horní Počernice</span>
+            </div>
             <nav>
                 <a href="index.html">Úvod</a>
                 <a href="aktuality.html" class="active">Aktuality</a>
@@ -19,25 +77,72 @@
     </header>
 
     <main class="container">
-        <h2>Aktuality a události</h2>
+        <h2 class="section-title">Aktuality z naší organizace</h2>
         
-        <article class="news-item">
-            <h3>Jarní rybářské závody dětí a mládeže</h3>
-            <span class="date">Publikováno: 15. května 2026</span>
-            <p>Zveme všechny mladé rybáře na tradiční jarní závody. Registrace závodníků probíhá od 7:00 přímo u rybníka. Bohaté věcné ceny pro každého účastníka jsou zajištěny díky našim sponzorům. Občerstvení na místě na zajištěno.</p>
-        </article>
-
-        <article class="news-item">
-            <h3>Plánovaná brigáda – úklid kolem revíru</h3>
-            <span class="date">Publikováno: 28. dubna 2026</span>
-            <p>Upozorňujeme členy, že nejbližší termín jarní brigády zaměřené na prořez dřevin a úklid odpadků kolem revíru je stanoven na tuto sobotu. Sraz je v 8:00 u rybářské klubovny. Pracovní rukavice a dobrou náladu s sebou!</p>
-        </article>
+        <div id="aktuality-stream" class="archiv-stream">
+            <p>Tahám nejnovější zprávy od vody...</p>
+        </div>
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 ČRS MO Horní Počernice. Všechna práva vyhrazena.</p>
+            <p>&copy; 2026 ČRS MO Horní Počernice | Web pro rybáře</p>
         </div>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // Inicializace Supabase
+  const SUPABASE_URL = 'https://jyqqyzpjujgymveolupt.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_UR-OGUOpeanlhKSMomA7OQ_14A92Mog';
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Funkce, která načte VŠECHNY články a rovnou je celé vykreslí
+  async function nactiAVykresliAktuality() {
+    const container = document.getElementById('aktuality-stream');
+
+    const { data, error } = await supabaseClient
+      .from('aktuality')
+      .select('*')
+      .order('datum_publikace', { ascending: false }); // Od nejnovějšího po nejstarší
+
+    if (error) {
+      console.error('Chyba při načítání:', error);
+      container.innerHTML = '<p>Nepodařilo se načíst aktuality. Zkuste to prosím později.</p>';
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      container.innerHTML = '<p>Momentálně zde nejsou žádné příspěvky.</p>';
+      return;
+    }
+
+    // Vyčistíme text "Tahám nejnovější zprávy..."
+    container.innerHTML = '';
+
+    // Proženeme data cyklem a složíme plnohodnotné články
+    data.forEach(clanek => {
+      const d = new Date(clanek.datum_publikace);
+      const naformatovaneDatum = `${d.getDate()}. ${d.getMonth() + 1}. ${d.getFullYear()}`;
+
+      container.innerHTML += `
+        <article class="full-article-card">
+            <span class="article-meta"><i class="fa-regular fa-calendar"></i> ${naformatovaneDatum}</span>
+            <h2>${clanek.titulek}</h2>
+            
+            ${clanek.obrazek_url ? `<img src="${clanek.obrazek_url}" alt="${clanek.titulek}" class="article-image">` : ''}
+            
+            ${clanek.perex ? `<div class="article-perex">${clanek.perex}</div>` : ''}
+            
+            <div class="article-body">${clanek.obsah}</div>
+        </article>
+      `;
+    });
+  }
+
+  // Spuštění po načtení stránky
+  document.addEventListener('DOMContentLoaded', nactiAVykresliAktuality);
+</script>
 </body>
 </html>
