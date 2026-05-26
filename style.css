@@ -215,3 +215,95 @@ footer {
     .header-flex { flex-direction: column; text-align: center; gap: 15px; }
     nav a { margin: 0 10px; }
 }
+
+/* STRÁNKA KONTAKT */
+.page-content {
+    padding: 40px 20px;
+}
+
+.page-title {
+    font-size: 2rem;
+    color: var(--primary-green);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.contact-card {
+    background: var(--light-gray);
+    border: 1px solid var(--border-gray);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.contact-card h3 {
+    color: var(--primary-green);
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-card h3 i {
+    color: #d4a373; /* Zlatá barva pro ikony */
+}
+
+.contact-card p {
+    margin-bottom: 8px;
+}
+
+.contact-card a {
+    color: var(--accent-green);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Tabulka úředních hodin */
+.hours-table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+.hours-table td {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border-gray);
+}
+
+.hours-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Kontejner pro mapu */
+.contact-map {
+    display: flex;
+    flex-direction: column;
+}
+
+.map-wrapper {
+    position: sticky;
+    top: 20px; /* Pokud by se scrollovalo, mapa zůstane na očích */
+    height: 100%;
+    min-height: 450px;
+    border: 1px solid var(--border-gray);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* Mobilní responzivita pro kontakt */
+@media (max-width: 768px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .map-wrapper {
+        min-height: 300px;
+    }
+}
