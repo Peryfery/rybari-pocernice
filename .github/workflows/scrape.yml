@@ -5,6 +5,9 @@ on:
     - cron: '0 3 * * 0' # Spustí se každou neděli přesně ve 03:00 ráno
   workflow_dispatch: # Umožní ti spustit stahování kdykoliv ručně kliknutím na tlačítko v GitHubu
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   scrape-and-save:
     runs-on: ubuntu-latest
@@ -15,7 +18,7 @@ jobs:
       - name: Nastavení prostředí Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Instalace potřebných knihoven pro robota
         run: |
