@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Členská sekce | ČRS MO Horní Počernice</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-flex">
+            <div class="logo-area">
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <h1>Český rybářský svaz</h1>
+                    <span>MO Horní Počernice</span>
+                </a>
+            </div>
+            <nav>
+                <a href="index.html">Úvod</a>
+                <a href="detsky_krouzek.html">Dětský kroužek</a>
+                <a href="aktuality.html">Aktuality</a>
+                <a href="fotogalerie.html">Fotogalerie</a>
+                <a href="clenska_sekce.html" class="active">Členská sekce</a>
+                <a href="kontakt.html">Kontakt</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container page-content">
+        <h2 class="page-title">Členská sekce</h2>
+
+        <div id="login-box" class="member-login-card">
+            <div class="login-header">
+                <i class="fa-solid fa-lock login-icon"></i>
+                <h3>Vstup pouze pro členy MO</h3>
+                <p>Pro přístup k interním dokumentům a zápisům z výboru zadejte klubové heslo.</p>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="password" id="klubove-heslo" placeholder="Zadejte přístupové heslo" required>
+                </div>
+                <button type="submit" class="btn-login">Ověřit a vstoupit</button>
+                <p id="chybova-hlaska" class="login-error" style="display: none;">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Nesprávné heslo, zkuste to znovu.
+                </p>
+            </form>
+        </div>
+
+        <div id="obsah-sekce" style="display: none;">
+            <div class="member-welcome-bar">
+                <div>
+                    <span class="status-badge"><i class="fa-solid fa-unlock"></i> Přihlášen</span>
+                    <p>Interní úložiště dokumentů místní organizace.</p>
+                </div>
+                <button onclick="odhlasitSe()" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Odhlásit se</button>
+            </div>
+
+            <div class="pcloud-iframe-container">
+                <iframe id="pcloud-frame"
+                        src="" 
+                        width="100%" 
+                        height="650" 
+                        frameborder="0" 
+                        scrolling="no">
+                </iframe>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Český rybářský svaz, z. s., místní organizace Praha 9 - Horní Počernice</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const zadaneHeslo = document.getElementById('klubove-heslo').value.trim();
+            const chybovaHlaska = document.getElementById('chybova-hlaska');
+
+            const zakodovaneZadane = btoa(zadaneHeslo);
+            const spravneZakodovane = 'U3VwaW5hLTIwMjY=';
+
+            if (zakodovaneZadane === spravneZakodovane) {
+                zobrazObsah();
+            } else {
+                chybovaHlaska.style.display = 'block';
+                document.getElementById('klubove-heslo').value = '';
+            }
+        });
+
+        function zobrazObsah() {
+            // Zavolá funkci ze script.js, která bezpečně vytáhne odkaz ze Supabase
+            nactiAtajneVlozPcloudOdkaz();
+
+            document.getElementById('login-box').style.display = 'none';
+            document.getElementById('obsah-sekce').style.display = 'block';
+        }
+
+        function odhlasitSe() {
+            window.location.reload();
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+</html>

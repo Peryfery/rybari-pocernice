@@ -18,7 +18,7 @@ function parsujTsRangeNaObjekt(rozsahString) {
 
   if (!startStr) return null;
 
-  // 2. Regulární výraz, který bezpečně vytáhne: Rok-Měsíc-Den (mezera nebo T) Hodina:Minuta
+  // 2. Regulární výraz, který bezpečně vytáhne: Rok-Měsíc-Den (mezera oder T) Hodina:Minuta
   const regex = /(\d{4})-(\d{2})-(\d{2})[\sT](\d{2}):(\d{2})/;
   
   const startMatch = startStr.match(regex);
@@ -60,7 +60,7 @@ function parsujTsRangeNaObjekt(rozsahString) {
 // Načítání úředních hodin (Původní verze pro index.html - NEMĚNIT)
 async function nactiUredniHodiny() {
   const container = document.getElementById('uredni-hodiny-list');
-  if (!container) return; // Ochrana, pokud element na stránce neexistuje
+  if (!container) return; 
   
   const dnes = new Date();
   dnes.setHours(0, 0, 0, 0);
@@ -124,7 +124,7 @@ async function nactiUredniHodiny() {
 // Načítání kalendáře akcí
 async function nactiKalendar() {
   const container = document.getElementById('kalendar-list');
-  if (!container) return; // Ochrana, pokud element na stránce neexistuje
+  if (!container) return; 
 
   const { data, error } = await supabaseClient
     .from('kalendar_akci')
@@ -158,13 +158,12 @@ async function nactiKalendar() {
   });
 }
 
-
 /* ==========================================================================
-   NOVÁ FUNKCE PRO STRÁNKU KONTAKTY (Zobrazí vše v mřížce bez duplikování času)
+   UPRAVENÁ FUNKCE PRO STRÁNKU KONTAKTY (Zobrazuje maximálně 8 následujících dat)
    ========================================================================== */
 async function nactiVsechnyUredniHodinyKontakty() {
   const container = document.getElementById('uredni-hodiny-kontakty-grid');
-  if (!container) return; // Spustí se jen tehdy, pokud jsme na stránce kontaktů
+  if (!container) return; 
 
   const dnes = new Date();
   dnes.setHours(0, 0, 0, 0);
@@ -185,19 +184,20 @@ async function nactiVsechnyUredniHodinyKontakty() {
     return;
   }
 
-  // Naparsujeme a vyfiltrujeme všechny budoucí hodiny (BEZ OMEZENÍ SLICE - vytáhneme úplně všechny)
-  const vsechnyBudouciHodiny = data
+  // Zde vybere přesně 8 nejbližších budoucích termínů
+  const budoucichOsemHodin = data
     .map(radek => parsujTsRangeNaObjekt(radek.rozsah))
     .filter(item => item !== null && item.jsDate >= dnes)
-    .sort((a, b) => a.jsDate - b.jsDate);
+    .sort((a, b) => a.jsDate - b.jsDate)
+    .slice(0, 8);
 
-  if (vsechnyBudouciHodiny.length === 0) {
+  if (budoucichOsemHodin.length === 0) {
     container.innerHTML = '<p>Momentálně nejsou naplánované žádné budoucí úřední hodiny.</p>';
     return;
   }
 
   // 1. Vytáhneme čas z prvního záznamu pro jednotné zobrazení v záhlaví
-  const prvniZaznam = vsechnyBudouciHodiny[0].surove;
+  const prvniZaznam = budoucichOsemHodin[0].surove;
   const startCas = `${String(prvniZaznam.start.hodina).padStart(2, '0')}:${String(prvniZaznam.start.minuta).padStart(2, '0')}`;
   
   let finalniCas = startCas;
@@ -206,13 +206,12 @@ async function nactiVsechnyUredniHodinyKontakty() {
     finalniCas += ` – ${konecCas}`;
   }
 
-  // 2. Vygenerujeme HTML pro jednotlivé dlaždice s daty
+  // 2. Vygenerujeme HTML pro dlaždice (bude jich max 8)
   let dlazdiceHtml = '';
-  vsechnyBudouciHodiny.forEach((item, index) => {
+  budoucichOsemHodin.forEach((item, index) => {
     const s = item.surove.start;
     const naformatovaneDatum = `${String(s.den).padStart(2, '0')}. ${String(s.mesic).padStart(2, '0')}.`;
     
-    // Zvýraznění úplně prvního (nejbližšího) termínu
     const jeNejblizsi = index === 0;
     const extraTrida = jeNejblizsi ? 'date-badge-next-full' : '';
     const stitek = jeNejblizsi ? '<span class="next-label-full">Nejbližší</span>' : '';
@@ -225,7 +224,7 @@ async function nactiVsechnyUredniHodinyKontakty() {
     `;
   });
 
-  // 3. Vykreslení celé komponenty do připraveného divu v kontakt.html
+  // 3. Vykreslení komponenty do kontakt.html
   container.innerHTML = `
     <div class="hours-card-full">
       <div class="hours-header-full">
@@ -247,12 +246,32 @@ async function nactiVsechnyUredniHodinyKontakty() {
   `;
 }
 
-// Inicializace podle toho, na které stránce se uživatel nachází
+/* ==========================================================================
+   BEZPEČNÉ VYTAŽENÍ TAJNÉHO ODKAZU ZE SUPABASE PO PŘIHLÁŠENÍ
+   ========================================================================== */
+async function nactiAtajneVlozPcloudOdkaz() {
+  const frame = document.getElementById('pcloud-frame');
+  if (!frame) return;
+
+  const { data, error } = await supabaseClient
+    .from('web_nastaveni')
+    .select('hodnota')
+    .eq('klic', 'pcloud_clenska_sekce')
+    .single();
+
+  if (error) {
+    console.error('Bezpečnostní chyba při načítání úložiště:', error);
+    return;
+  }
+
+  if (data && data.hodnota) {
+    // Bezpečné propsání správného e.pcloud.link odkazu do prázdného iFramu
+    frame.src = data.hodnota;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Spustí se na index.html (pokud tam prvky existují)
   nactiUredniHodiny();
   nactiKalendar();
-  
-  // Spustí se na kontakt.html
   nactiVsechnyUredniHodinyKontakty();
 });

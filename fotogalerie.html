@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fotogalerie | ČRS MO Horní Počernice</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+</head>
+<body>
+    <header>
+        <div class="container header-flex">
+            <div class="logo-area">
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <h1>Český rybářský svaz</h1>
+                    <span>MO Horní Počernice</span>
+                </a>
+            </div>
+            <nav>
+                <a href="index.html">Úvod</a>
+                <a href="detsky_krouzek.html">Dětský kroužek</a>
+                <a href="aktuality.html">Aktuality</a>
+                <a href="fotogalerie.html" class="active">Fotogalerie</a>
+				<a href="clenska_sekce.html">Členská sekce</a>
+                <a href="kontakt.html">Kontakt</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container page-content">
+        <h2 class="page-title">Fotogalerie</h2>
+        <p style="margin-bottom: 30px; color: #555555;">
+            Nahlédněte do činnosti naší místní organizace. Kliknutím na album otevřete prohlížeč fotografií.
+        </p>
+        
+        <div id="alba-grid" class="albums-grid">
+            <p><i class="fa-solid fa-spinner fa-spin"></i> Načítám alba z cloudu...</p>
+        </div>
+
+        <div id="skryte-fotky" style="display: none;"></div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Český rybářský svaz, z. s., místní organizace Praha 9 - Horní Počernice</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+
+    <script>
+        const CLOUDINARY_CLOUD_NAME = 'duazuetfa';
+        const CLOUDINARY_API_KEY = '282584267616712';
+
+        // Tady máš své správně otagované položky
+        const SEZNAM_ALB = [
+            'galerie-České_ryby',
+            'galerie-Cisteni_Reviru_2026'
+        ];
+
+        async function nactiFotkyProTag(tag) {
+            const url = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/list/${tag}.json`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) return [];
+                const data = await response.json();
+                return data.resources || [];
+            } catch (e) {
+                console.error(`Chyba při načítání tagu ${tag}:`, e);
+                return [];
+            }
+        }
+
+        async function inicializujGalerii() {
+            const gridProAlba = document.getElementById('alba-grid');
+            const skrytyKontejner = document.getElementById('skryte-fotky');
+            
+            gridProAlba.innerHTML = '';
+            skrytyKontejner.innerHTML = '';
+
+            let nalezenaNejakaFotka = false;
+
+            for (const tag of SEZNAM_ALB) {
+                const fotky = await nactiFotkyProTag(tag);
+                if (fotky.length === 0) continue;
+                nalezenaNejakaFotka = true;
+
+                const cistyNazevAlba = tag.replace('galerie-', '').replace(/_/g, ' ');
+
+                // 1. Vezmeme první fotku jako "titulní přebal" alba
+                const prvniFoto = fotky[0];
+                const nahledKartyUrl = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/w_500,h_375,c_fill,q_auto,f_auto/v${prvniFoto.version}/${prvniFoto.public_id}.${prvniFoto.format}`;
+                const plnaPrvniFotoUrl = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto,f_auto/v${prvniFoto.version}/${prvniFoto.public_id}.${prvniFoto.format}`;
+
+                // 2. Vytvoříme viditelnou kartu alba v mřížce (odkaz spouští GLightbox)
+                const albumKarta = document.createElement('a');
+                albumKarta.href = plnaPrvniFotoUrl;
+                albumKarta.className = 'glightbox album-card';
+                albumKarta.setAttribute('data-gallery', tag);
+                
+                albumKarta.innerHTML = `
+                    <div class="album-card-image">
+                        <img src="${nahledKartyUrl}" alt="${cistyNazevAlba}" loading="lazy">
+                        <div class="album-card-badge"><i class="fa-regular fa-image"></i> ${fotky.length}</div>
+                    </div>
+                    <div class="album-card-info">
+                        <h3>${cistyNazevAlba}</h3>
+                    </div>
+                `;
+                gridProAlba.appendChild(albumKarta);
+
+                // 3. Všechny OSTATNÍ fotky z tohoto alba skryjeme do pozadí stránky, 
+                // aby se načetly do stejné galerie v GLightboxu, až uživatel klikne na kartu.
+                for (let i = 1; i < fotky.length; i++) {
+                    const foto = fotky[i];
+                    const plnaUrl = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto,f_auto/v${foto.version}/${foto.public_id}.${foto.format}`;
+                    
+                    const skrytyOdkaz = document.createElement('a');
+                    skrytyOdkaz.href = plnaUrl;
+                    skrytyOdkaz.className = 'glightbox';
+                    skrytyOdkaz.setAttribute('data-gallery', tag);
+                    skrytyKontejner.appendChild(skrytyOdkaz);
+                }
+            }
+
+            if (!nalezenaNejakaFotka) {
+                gridProAlba.innerHTML = '<p>Zatím zde nejsou žádná alba s fotografiemi.</p>';
+                return;
+            }
+
+            // Inicializace GLightboxu
+            GLightbox({
+                selector: '.glightbox',
+                loop: true,
+                openEffect: 'zoom',
+                closeEffect: 'zoom'
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', inicializujGalerii);
+    </script>
+</body>
+</html>
