@@ -11,11 +11,14 @@
     <header>
         <div class="container header-flex">
             <div class="logo-area">
-                <h1>Český rybářský svaz</h1>
-                <span>MO Horní Počernice</span>
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <h1>Český rybářský svaz</h1>
+                    <span>MO Horní Počernice</span>
+                </a>
             </div>
             <nav>
                 <a href="index.html" class="active">Úvod</a>
+                <a href="detsky_krouzek.html">Dětský kroužek</a>
                 <a href="aktuality.html">Aktuality</a>
                 <a href="kontakt.html">Kontakt</a>
             </nav>
@@ -25,47 +28,51 @@
     <div class="main-banner">
         <img src="header.png" alt="Rybářský revír" class="banner-image">
         <div class="banner-overlay">
-            <h2>Místní organizace Horní Počernice</h2>
-            <p>Petrův zdar všem přátelům cechu rybářského!</p>
+            <div class="container">
+                <h2>Rybáři Horní Počernice</h2>
+                <p>Petrův zdar všem přátelům cechu rybářského!</p>
+            </div>
         </div>
     </div>
 
     <main class="container">
         <section class="quick-links">
-            <h2 class="section-title">Co u nás můžete vyřídit?</h2>
+            <h2 class="section-title">Základní informace</h2>
             <div class="grid-links">
-                <a href="#" class="link-card">
+                <a href="https://www.rybsvaz.cz/povolenka-k-lovu" class="link-card" target="_blank" rel="noopener noreferrer">
                     <img src="icon-povolenka.png" alt="Povolenky">
-                    <span>Povolenky k lovu</span>
+                    <span>Ceník povolenek</span>
                 </a>
-                <a href="#" class="link-card">
+                <a href="https://www.rybsvaz.cz/jak-se-stat-rybarem" class="link-card" target="_blank" rel="noopener noreferrer">
                     <img src="icon-clenstvi.png" alt="Členství">
-                    <span>Členství v ČRS</span>
+                    <span>Jak se stát rybářem</span>
                 </a>
-                <a href="#" class="link-card">
+                <a href="https://www.rybsvaz.cz/mo/-/praha-9-horni-pocernice" class="link-card" target="_blank" rel="noopener noreferrer">
                     <img src="icon-brigady.png" alt="Brigády">
-                    <span>Plnění brigád</span>
+                    <span>Brigády</span>
                 </a>
-                <a href="#" class="link-card">
+                <a href="detsky_krouzek.html" class="link-card" rel="noopener noreferrer">
                     <img src="icon-zkousky.png" alt="Zkoušky">
-                    <span>Zkoušky a mládež</span>
+                    <span>Dětský kroužek</span>
                 </a>
             </div>
         </section>
 
         <div class="flex-news-cal">
             <section class="news-list">
-                <h2 class="section-title">Aktuality</h2>
+                <h2 class="section-title">Nejbližší úřední hodiny</h2>
                 
-                <div id="aktuality-list">
-                    <p>Načítám nejnovější aktuality...</p>
-                </div>
+                <div class="uredni-hodiny-wrapper">
+                    <div id="uredni-hodiny-list">
+                        <p>Načítám úřední hodiny...</p>
+                    </div>
 
-                <a href="aktuality.html" class="btn-more">Všechny aktuality</a>
+                    <a href="kontakt.html" class="btn-more" style="margin-top: 20px;">Více informací a kontakt</a>
+                </div>
             </section>
 
             <aside class="calendar-aside">
-                <h2 class="section-title">Kalendář akcí</h2>
+                <a href="https://www.rybsvaz.cz/akce?mistniOrganizace=praha-9-horni-pocernice"><h2 class="section-title">Kalendář akcí</h2></a>
                 
                 <div id="kalendar-list">
                     <p>Načítám kalendář akcí...</p>
@@ -76,104 +83,12 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 ČRS MO Horní Počernice | Web pro rybáře</p>
+            <p>&copy; 2026 Český rybářský svaz, z. s., místní organizace Praha 9 - Horní Počernice</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-  // Inicializace Supabase s upraveným názvem proměnné (supabaseClient)
-  const SUPABASE_URL = 'https://jyqqyzpjujgymveolupt.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_UR-OGUOpeanlhKSMomA7OQ_14A92Mog';
-  
-  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  // Pomocné pole pro české názvy měsíců v kalendáři
-  const mesice = ['led', 'úno', 'bře', 'dub', 'kvě', 'čen', 'čec', 'srp', 'zář', 'říj', 'lis', 'pro'];
-
-  // 3. Funkce pro načtení a vykreslení aktualit
-  async function nactiAktuality() {
-    const { data, error } = await supabaseClient
-      .from('aktuality')
-      .select('*')
-      .order('datum_publikace', { ascending: false }) // OPRAVENO: datum_publikace
-      .limit(3); // Chceme na hlavní stránce jen poslední 3
-
-    const container = document.getElementById('aktuality-list');
-
-    if (error) {
-      console.error('Chyba při načítání aktualit:', error);
-      container.innerHTML = '<p>Nepodařilo se načíst aktuality.</p>';
-      return;
-    }
-
-    if (!data || data.length === 0) {
-      container.innerHTML = '<p>Momentálně nejsou žádné nové aktuality.</p>';
-      return;
-    }
-
-    // Vyčistíme placeholder a vykreslíme data
-    container.innerHTML = '';
-    data.forEach(clanek => {
-      // Převedeme datum z DB (YYYY-MM-DD) na formát DD. MM.
-      const d = new Date(clanek.datum_publikace);
-      const naformatovaneDatum = `${String(d.getDate()).padStart(2, '0')}. ${String(d.getMonth() + 1).padStart(2, '0')}.`;
-
-      container.innerHTML += `
-        <article class="news-entry">
-            <div class="news-date">${naformatovaneDatum}</div>
-            <div class="news-content">
-                <h3><a href="aktuality.html?id=${clanek.id}">${clanek.titulek}</a></h3>
-                <p>${clanek.perex || clanek.obsah.substring(0, 120) + '...'}</p>
-            </div>
-        </article>
-      `;
-    });
-  }
-
-  // 4. Funkce pro načtení a vykreslení kalendáře akcí
-  async function nactiKalendar() {
-    const { data, error } = await supabaseClient
-      .from('kalendar_akci')
-      .select('*')
-      .gte('datum_konani', new Date().toISOString().split('T')[0]) // Pouze budoucí akce
-      .order('datum_konani', { ascending: true });
-
-    const container = document.getElementById('kalendar-list');
-
-    if (error) {
-      console.error('Chyba při načítání kalendáře:', error);
-      container.innerHTML = '<p>Nepodařilo se načíst kalendář.</p>';
-      return;
-    }
-
-    if (!data || data.length === 0) {
-      container.innerHTML = '<p>Žádné plánované akce.</p>';
-      return;
-    }
-
-    container.innerHTML = '';
-    data.forEach(akce => {
-      const d = new Date(akce.datum_konani);
-      const den = d.getDate();
-      const mesic = mesice[d.getMonth()]; // Získá zkratku měsíce z pole
-
-      container.innerHTML += `
-        <div class="cal-item">
-            <div class="cal-date"><strong>${den}</strong><span>${mesic}</span></div>
-            <div class="cal-info">${akce.nazev} ${akce.cas_konani ? `<br><small><i class="fa-regular fa-clock"></i> ${akce.cas_konani.substring(0,5)}</small>` : ''}</div>
-        </div>
-      `;
-    });
-  }
-
-  // Spuštění po načtení DOMu
-  document.addEventListener('DOMContentLoaded', () => {
-    nactiAktuality();
-    nactiKalendar();
-  });
-</script>
+    
+    <script src="script.js"></script>
 </body>
 </html>
-    

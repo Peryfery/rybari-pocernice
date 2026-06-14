@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kontakt | ČRS MO Horní Počernice</title>
+    <title>ČRS MO Horní Počernice - Oficiální web</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -11,11 +11,14 @@
     <header>
         <div class="container header-flex">
             <div class="logo-area">
-                <h1>Český rybářský svaz</h1>
-                <span>MO Horní Počernice</span>
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <h1>Český rybářský svaz</h1>
+                    <span>MO Horní Počernice</span>
+                </a>
             </div>
             <nav>
                 <a href="index.html">Úvod</a>
+                <a href="detsky_krouzek.html">Dětský kroužek</a>
                 <a href="aktuality.html">Aktuality</a>
                 <a href="kontakt.html" class="active">Kontakt</a>
             </nav>
@@ -30,41 +33,42 @@
                 <div class="contact-card">
                     <h3><i class="fa-solid fa-location-dot"></i> Sídlo organizace</h3>
                     <p><strong>ČRS MO Horní Počernice</strong></p>
-                    <p>Ulice Rybářská 123/4</p>
+                    <p>Ulice Na svěcence 2169/4</p>
                     <p>193 00 Praha 9 - Horní Počernice</p>
-                    <p>IČO: 12345678</p>
                 </div>
 
-                <div class="contact-card">
-                    <h3><i class="fa-solid fa-clock"></i> Úřední hodiny</h3>
-                    <p>Pro výdej povolenek a administrativu:</p>
-                    <table class="hours-table">
-                        <tr><td><strong>Čtvrtek:</strong></td><td>16:00 – 18:30</td></tr>
-                        <tr><td><strong>Sobota:</strong></td><td>09:00 – 11:30 (jen sudé týdny)</td></tr>
-                    </table>
-                </div>
+                <div id="uredni-hodiny-kontakty-grid">
+                    </div>
 
                 <div class="contact-card">
                     <h3><i class="fa-solid fa-address-book"></i> Důležité kontakty</h3>
-                    <p><strong>Předseda:</strong> Jan Rybář (+420 123 456 789)</p>
-                    <p><strong>Hospodář:</strong> Petr Úhoř (+420 987 654 321)</p>
-                    <p><strong>E-mail:</strong> <a href="mailto:info@rybari-pocernice.cz">info@rybari-pocernice.cz</a></p>
-                    <p><strong>Číslo účtu:</strong> 123456789/0100</p>
+                    <p><strong>Předseda:</strong> Radek Csik (+420 774 888 835)</p>
+                    <p><strong>Místopředseda:</strong> Emil Břečka</p>
+                    <p><strong>E-mail:</strong> <a href="mailto:radekcsik@seznam.cz">radekcsik@seznam.cz</a></p>
+                    <p><strong>Číslo účtu:</strong> 213816871/0300</p>
                 </div>
             </div>
 
             <div class="contact-map">
                 <div class="map-wrapper">
-                    <iframe src="https://api.mapy.cz/frame?params=%7B%22x%22%3A14.615%2C%22y%22%3A50.110%2C%22z%22%3A15%2C%22source%22%3A%22coor%22%2C%22id%22%3A%2214.615%2C50.110%22%7D" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                </div>
+                    <iframe style="border:none" 
+                            src="https://mapy.cz/s/kugumoleca" 
+                            width="100%" 
+                            height="100%" 
+                            frameborder="0">
+                    </iframe>
+                    </div>
             </div>
         </div>
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 ČRS MO Horní Počernice | Web pro rybáře</p>
+            <p>&copy; Český rybářský svaz, z. s., místní organizace Praha 9 - Horní Počernice</p>
         </div>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
 </body>
 </html>

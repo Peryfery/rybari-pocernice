@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalendář akcí | ČRS MO Horní Počernice</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-flex">
+            <div class="logo-area">
+                <h1>Český rybářský svaz</h1>
+                <span>MO Horní Počernice</span>
+            </div>
+            <nav>
+                <a href="index.html">Úvod</a>
+                <a href="aktuality.html">Aktuality</a>
+                <a href="kalendar.html" class="active">Kalendář</a>
+                <a href="kontakt.html">Kontakt</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container page-content">
+        <h2 class="page-title">Kalendář akcí ČRS</h2>
+        <p style="margin-bottom: 20px; color: #555;">
+            Zde naleznete oficiální a aktuální přehled plánovaných akcí, schůzí a závodů naší místní organizace synchronizovaný přímo z portálu ČRS.
+        </p>
+        
+        <div class="calendar-iframe-wrapper" style="width: 100%; height: 700px; border: 1px solid #eef2f0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04);">
+            <iframe src="https://www.rybsvaz.cz/akce?mistniOrganizace=praha-9-horni-pocernice" 
+                    width="100%" 
+                    height="100%" 
+                    style="border: none;" 
+                    loading="lazy">
+            </iframe>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 ČRS MO Horní Počernice. Všechna práva vyhrazena.</p>
+        </div>
+    </footer>
+</body>
+</html>

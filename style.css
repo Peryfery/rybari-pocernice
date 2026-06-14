@@ -302,6 +302,53 @@ nav a:hover, nav a.active {
     background: #1d3a2b;
 }
 
+/* --- ZVLÁŠTNÍ ÚPRAVA PRO KOMPAKTNÍ ÚŘEDNÍ HODINY --- */
+.uredni-hodiny-wrapper {
+    max-width: 320px;
+    width: 100%;
+}
+
+.news-entry-hours {
+    display: flex;
+    gap: 20px;
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border: 1px solid #eef2f0;
+    margin-bottom: 15px;
+}
+
+.news-content-hours {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.news-content-hours p {
+    margin: 0;
+    white-space: nowrap;
+    color: #2c3e50;
+    font-size: 1rem;
+}
+
+.btn-more-hours {
+    display: block;
+    background: #2e5a44;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background 0.2s;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-more-hours:hover {
+    background: #1d3a2b;
+}
+
 /* --- STYLOVÁNÍ MINIKALENDÁŘE --- */
 #kalendar-list {
     display: flex;
@@ -510,6 +557,119 @@ nav a:hover, nav a.active {
     color: #1a3326;
 }
 
+/* --- NOVÝ MODERNÍ GRID PRO ÚŘEDNÍ HODINY ZE SUPABASE --- */
+.hours-card-full {
+    background: #ffffff;
+    border: 1px solid #eef2f0;       /* 1. Nejdřív jemný rámeček kolem dokola */
+    border-left: 4px solid #2e5a44;  /* 2. Až POTOM silná zelená linka vlevo */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    padding: 25px;
+    margin-top: 20px;
+}
+
+.hours-header-full {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e6e2;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.hours-title-full {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hours-icon-full {
+    font-size: 1.4rem;
+    color: #2e5a44;
+}
+
+.hours-title-full h3 {
+    margin: 0;
+    color: #1a3326;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.hours-title-full p {
+    margin: 4px 0 0 0;
+    color: #666666;
+    font-size: 0.95rem;
+}
+
+.hours-time-badge-full {
+    background: #f4f7f5;
+    color: #2e5a44;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #e0e6e2;
+}
+
+.hours-grid-full {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
+}
+
+.date-badge-full {
+    background: #fcfdfe;
+    border: 1px solid #eef2f0;
+    border-radius: 6px;
+    padding: 14px 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.date-badge-full:hover {
+    border-color: #2e5a44;
+    background: #f4f7f5;
+    transform: translateY(-2px);
+}
+
+.date-text-full {
+    color: #1a3326;
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.date-badge-next-full {
+    background: #f4f7f5;
+    border-color: #2e5a44;
+    box-shadow: 0 2px 6px rgba(46, 90, 68, 0.12);
+}
+
+.date-badge-next-full .date-text-full {
+    color: #2e5a44;
+    font-weight: 700;
+}
+
+.next-label-full {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    background: #2e5a44;
+    color: #ffffff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
 /* Sekce s mapou */
 .contact-map {
     height: 100%;
@@ -542,13 +702,15 @@ footer {
    9. RESPONSIVITA (MEDIA QUERIES PRO MOBILY A TABLETY)
    ========================================================================== */
 @media (max-width: 992px) {
-    /* Úvod: Aktuality a kalendář skočí pod sebe */
     .flex-news-cal {
         flex-direction: column;
         gap: 40px;
     }
+    
+    .uredni-hodiny-wrapper {
+        max-width: 100%; /* Na tabletech/mobilech ať se roztáhnou na plnou šířku */
+    }
 
-    /* Kontakt: Informace a mapa skočí pod sebe */
     .contact-grid {
         grid-template-columns: 1fr;
         gap: 30px;
@@ -560,7 +722,6 @@ footer {
 }
 
 @media (max-width: 768px) {
-    /* Menu se poskládá vertikálně */
     .header-flex {
         flex-direction: column;
         gap: 15px;
@@ -575,8 +736,7 @@ footer {
         font-size: 1.8rem;
     }
 
-    /* Náhledy aktualit na mobilu přerovnáme pod sebe */
-    .news-entry {
+    .news-entry, .news-entry-hours {
         flex-direction: column;
         gap: 12px;
     }
@@ -588,7 +748,6 @@ footer {
         padding: 6px 15px;
     }
     
-    /* Snížení paddingu u plného článku pro menší displeje */
     .full-article-card {
         padding: 20px;
     }
