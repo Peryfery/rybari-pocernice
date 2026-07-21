@@ -2,7 +2,7 @@ name: ČRS Web Synchronizace
 
 on:
   schedule:
-    - cron: '0 3 * * 0' # Spustí se každou neděli přesně ve 03:00 ráno
+    - cron: '0 3 * * 0,3' # Spustí se každou neděli a středu přesně ve 03:00 UTC
   workflow_dispatch: # Umožní ti spustit stahování kdykoliv ručně kliknutím na tlačítko v GitHubu
 
 env:
