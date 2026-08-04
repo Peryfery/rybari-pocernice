@@ -2,8 +2,8 @@ name: ČRS Web Synchronizace
 
 on:
   schedule:
-    - cron: '0 3 * * 0,3' # Spustí se každou neděli a středu přesně ve 03:00 UTC
-  workflow_dispatch: # Umožní ti spustit stahování kdykoliv ručně kliknutím na tlačítko v GitHubu
+    - cron: '0 3 * * 0,3' # Běží v neděli a ve středu v 03:00 UTC
+  workflow_dispatch:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -30,3 +30,11 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node scrape.js
+
+      # POJISTKA: Tento krok se spustí VŽDY (i když scrape.js selže)
+      - name: Pojistný ping do Supabase
+        if: always()
+        run: |
+          curl -f -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/NAZEV_VASI_TABULKY?select=id&limit=1" \
+          -H "apikey: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"
