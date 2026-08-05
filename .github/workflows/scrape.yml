@@ -31,10 +31,10 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node scrape.js
 
-      # POJISTKA: Tento krok se spustí VŽDY (i když scrape.js selže)
+      # POJISTKA: Volá kořenové OpenAPI rozhraní Supabase (nevyžaduje název tabulky)
       - name: Pojistný ping do Supabase
         if: always()
         run: |
-          curl -f -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/NAZEV_VASI_TABULKY?select=id&limit=1" \
+          curl -i "${{ secrets.SUPABASE_URL }}/rest/v1/" \
           -H "apikey: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
           -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"
