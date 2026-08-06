@@ -6,6 +6,7 @@
     <title>ČRS MO Horní Počernice - Oficiální web</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%231a3326'/><path d='M14 32c12-14 26-10 32 0-6 10-20 14-32 0z' fill='%23ffffff'/><path d='M42 32l12-8v16z' fill='%23ffffff'/><circle cx='23' cy='29' r='2' fill='%231a3326'/></svg>">
 </head>
 <body>
     <header>
@@ -20,8 +21,8 @@
                 <a href="index.html">Úvod</a>
                 <a href="detsky_krouzek.html">Dětský kroužek</a>
                 <a href="aktuality.html">Aktuality</a>
-				<a href="fotogalerie.html">Fotogalerie</a>
-				<a href="clenska_sekce.html">Členská sekce</a>
+                <a href="fotogalerie.html">Fotogalerie</a>
+                <a href="clenska_sekce.html">Členská sekce</a>
                 <a href="kontakt.html" class="active">Kontakt</a>
             </nav>
         </div>
@@ -32,6 +33,20 @@
         
         <div class="contact-grid">
             <div class="contact-info">
+                
+                <!-- 1. Důležité kontakty (Celá karta je odkaz na web svazu) -->
+                <a href="https://www.rybsvaz.cz/mo/-/praha-9-horni-pocernice" class="contact-card clickable-card" target="_blank" rel="noopener noreferrer">
+                    <h3><i class="fa-solid fa-address-book"></i> Důležité kontakty</h3>
+                    <p><strong>Předseda:</strong> Radek Csik (+420 774 888 835)</p>
+					<p><strong>E-mail:</strong> radekcsik@seznam.cz</p>
+                    <p><strong>Místopředseda:</strong> Emil Břečka</p>
+                    <p><strong>Číslo účtu:</strong> 213816871/0300</p>
+					<p><strong>Datová schránka:</strong> n299thg</p>
+                    
+                    <div class="card-link-hint">Zobrazit profil MO na webu svazu &rarr;</div>
+                </a>
+
+                <!-- 2. Sídlo organizace -->
                 <div class="contact-card">
                     <h3><i class="fa-solid fa-location-dot"></i> Sídlo organizace</h3>
                     <p><strong>ČRS MO Horní Počernice</strong></p>
@@ -39,16 +54,10 @@
                     <p>193 00 Praha 9 - Horní Počernice</p>
                 </div>
 
+                <!-- 3. Úřední hodiny (Vkládají se automaticky z JavaScriptu/Supabase) -->
                 <div id="uredni-hodiny-kontakty-grid">
-                    </div>
-
-                <div class="contact-card">
-                    <h3><i class="fa-solid fa-address-book"></i> Důležité kontakty</h3>
-                    <p><strong>Předseda:</strong> Radek Csik (+420 774 888 835)</p>
-                    <p><strong>Místopředseda:</strong> Emil Břečka</p>
-                    <p><strong>E-mail:</strong> <a href="mailto:radekcsik@seznam.cz">radekcsik@seznam.cz</a></p>
-                    <p><strong>Číslo účtu:</strong> 213816871/0300</p>
                 </div>
+
             </div>
 
             <div class="contact-map">
@@ -59,7 +68,7 @@
                             height="100%" 
                             frameborder="0">
                     </iframe>
-                    </div>
+                </div>
             </div>
         </div>
     </main>
