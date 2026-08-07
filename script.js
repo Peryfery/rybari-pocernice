@@ -233,6 +233,7 @@ async function nactiVsechnyUredniHodinyKontakty() {
           <div>
             <h3>Úřední hodiny 2026</h3>
             <p>Pro výdej povolenek a administrativu</p>
+            <p>PŘIJÍMÁNÍ NOVÝCH ČLENŮ 1x MESÍČNĚ PO TELEFONICKÉ DOMLUVĚ (p. Pachta): +420 777 028 592</p>
           </div>
         </div>
         <div class="hours-time-badge-full">
