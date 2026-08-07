@@ -63,6 +63,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap; /* Pro přehledné rozbalení na mobilu */
 }
 
 .logo-area h1 {
@@ -94,6 +95,23 @@ nav a {
 nav a:hover, nav a.active {
     background-color: #2e5a44;
     color: #ffffff;
+}
+
+/* Tlačítko Hamburger menu na výchozím rozlišení skryté */
+.mobile-menu-btn {
+    display: none;
+    background: #2e5a44;
+    color: #ffffff;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-menu-btn:hover {
+    background-color: #438463;
 }
 
 /* ==========================================================================
@@ -192,12 +210,11 @@ nav a:hover, nav a.active {
 .flex-news-cal {
     display: flex;
     gap: 30px;
-    align-items: stretch; /* Zajistí stejnou výšku obou sloupců */
+    align-items: stretch;
 }
 
-/* Levý sloupec - Úřední hodiny (kompaktní karta) */
 .news-list {
-    flex: 0 0 340px; /* Zachová kompaktní šířku, aby text nebyl roztažený */
+    flex: 0 0 340px;
     background-color: #f4f7f5;
     padding: 25px;
     border-radius: 8px;
@@ -211,10 +228,9 @@ nav a:hover, nav a.active {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    justify-content: space-between; /* Přilepí tlačítko dolů */
+    justify-content: space-between;
 }
 
-/* Pravý sloupec - Klikatelný kalendář (vyplní zbytek místa) */
 a.clickable-aside {
     flex: 1;
     background-color: #f4f7f5;
@@ -237,7 +253,6 @@ a.clickable-aside .section-title {
     color: #1a3326;
 }
 
-/* --- STYLOVÁNÍ NÁHLEDŮ AKTUALIT (INDEX) --- */
 #aktuality-list {
     display: flex;
     flex-direction: column;
@@ -254,8 +269,6 @@ a.clickable-aside .section-title {
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     border: 1px solid #eef2f0;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    
-    /* DŮLEŽITÉ: Umožňuje roztáhnout klikací plochu na celou kartu */
     position: relative; 
     cursor: pointer;
 }
@@ -289,7 +302,6 @@ a.clickable-aside .section-title {
     transition: color 0.2s;
 }
 
-/* TRIK: Neviditelná vrstva odkazu přes celou plochu .news-entry */
 .news-entry h3 a::after {
     content: "";
     position: absolute;
@@ -306,7 +318,6 @@ a.clickable-aside .section-title {
     font-size: 0.95rem;
 }
 
-/* Hover efekty pro celou klikací kartu */
 .news-entry:hover {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(46, 90, 68, 0.1);
@@ -316,7 +327,6 @@ a.clickable-aside .section-title {
     color: #438463;
 }
 
-/* Tlačítko "Všechny aktuality" */
 .btn-more {
     display: inline-block;
     background: #2e5a44;
@@ -332,7 +342,6 @@ a.clickable-aside .section-title {
     background: #1d3a2b;
 }
 
-/* --- ZVLÁŠTNÍ ÚPRAVA PRO KOMPAKTNÍ ÚŘEDNÍ HODINY --- */
 .news-entry-hours {
     display: flex;
     gap: 20px;
@@ -374,7 +383,6 @@ a.clickable-aside .section-title {
     background: #1d3a2b;
 }
 
-/* --- STYLOVÁNÍ MINIKALENDÁŘE --- */
 #kalendar-list {
     display: flex;
     flex-direction: column;
@@ -436,7 +444,7 @@ a.clickable-aside .section-title {
 }
 
 /* ==========================================================================
-   6. STRÁNKA: AKTUALITY (AKTUALITY.HTML - PROUD PLNÝCH ČLÁNKŮ)
+   6. STRÁNKA: AKTUALITY
    ========================================================================== */
 .archiv-stream {
     display: flex;
@@ -493,11 +501,11 @@ a.clickable-aside .section-title {
     font-size: 1.05rem;
     color: #2d3748;
     line-height: 1.8;
-    white-space: pre-line; /* Klíčové: drží odstavce a entery ze Supabase */
+    white-space: pre-line;
 }
 
 /* ==========================================================================
-   7. STRÁNKA: KONTAKT (KONTAKT.HTML)
+   7. STRÁNKA: KONTAKT
    ========================================================================== */
 .contact-grid {
     display: grid;
@@ -560,7 +568,6 @@ a.clickable-aside .section-title {
     text-decoration: underline;
 }
 
-/* --- KLIKATELNÁ KARTA V KONTAKTECH --- */
 a.clickable-card {
     display: block;
     text-decoration: none;
@@ -574,7 +581,6 @@ a.clickable-card:hover {
     border-color: #2e5a44;
 }
 
-/* Vizuální nápověda u odkazu na svaz */
 .card-link-hint {
     margin-top: 15px;
     padding-top: 10px;
@@ -590,7 +596,6 @@ a.clickable-card:hover .card-link-hint {
     color: #438463;
 }
 
-/* Úřední hodiny v tabulce */
 .hours-table {
     width: 100%;
     margin-top: 15px;
@@ -612,11 +617,10 @@ a.clickable-card:hover .card-link-hint {
     color: #1a3326;
 }
 
-/* --- NOVÝ MODERNÍ GRID PRO ÚŘEDNÍ HODINY ZE SUPABASE --- */
 .hours-card-full {
     background: #ffffff;
-    border: 1px solid #eef2f0;       /* 1. Nejdřív jemný rámeček kolem dokola */
-    border-left: 4px solid #2e5a44;  /* 2. Až POTOM silná zelená linka vlevo */
+    border: 1px solid #eef2f0;
+    border-left: 4px solid #2e5a44;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     padding: 25px;
@@ -725,7 +729,6 @@ a.clickable-card:hover .card-link-hint {
     letter-spacing: 0.5px;
 }
 
-/* Sekce s mapou */
 .contact-map {
     height: 100%;
 }
@@ -759,12 +762,12 @@ footer {
 @media (max-width: 992px) {
     .flex-news-cal {
         flex-direction: column;
-        gap: 30px; /* Upravena mezera pro shodu s novým layoutem */
+        gap: 30px;
     }
     
     .news-list {
         flex: 1 1 auto;
-        width: 100%; /* Na mobilu se roztáhne přes celou šířku místo 340px */
+        width: 100%;
     }
 
     .contact-grid {
@@ -779,24 +782,39 @@ footer {
 
 @media (max-width: 768px) {
     .header-flex {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
     }
 
-    /* --- OPTIMALIZACE NAVIGACE PRO MOBILNÍ TELEFONY --- */
+    /* Zobrazíme tlačítko pro hamburger menu */
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    /* Navigace na mobilu: ve výchozím stavu skrytá */
     nav {
-        flex-wrap: wrap;           /* Povolí zalomení tlačítek na více řádků */
-        justify-content: center;   /* Zarovná tlačítka na střed */
-        gap: 8px;                  /* Zmenší mezery mezi tlačítky pro úsporu místa */
+        display: none;
+        flex-direction: column;
         width: 100%;
+        gap: 8px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #2e5a44;
+    }
+
+    /* Třída pridana přes JS při kliknutí na hamburger */
+    nav.nav-open {
+        display: flex;
     }
 
     nav a {
-        padding: 8px 12px;         /* Mírně zmenší vnitřní odsazení */
-        font-size: 0.9rem;          /* Jemně zmenší písmo pro lepší vměstnání */
-        background-color: rgba(255, 255, 255, 0.08); /* Jemný tmavý podklad pro čisté mobilní tlačítko */
+        text-align: center;
+        padding: 10px 16px;
+        background-color: rgba(255, 255, 255, 0.08);
         border-radius: 6px;
+        font-size: 1rem;
     }
 
     .main-banner {
@@ -825,11 +843,11 @@ footer {
 }
 
 /* ==========================================================================
-   10. SEKCE: MODERNÍ KOMPAKTNÍ FOTOGALERIE (ALBA V MŘÍŽCE)
+   10. SEKCE: FOTOGALERIE
    ========================================================================== */
 .albums-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* Na velkém monitoru vytvoří 3 sloupce */
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 30px;
     margin-top: 20px;
 }
@@ -862,12 +880,11 @@ footer {
     transition: transform 0.3s ease;
 }
 
-/* Počet fotek v rohu alba */
 .album-card-badge {
     position: absolute;
     top: 15px;
     right: 15px;
-    background: rgba(26, 51, 38, 0.85); /* Tmavě zelená s průhledností */
+    background: rgba(26, 51, 38, 0.85);
     color: #ffffff;
     padding: 4px 12px;
     border-radius: 20px;
@@ -889,7 +906,6 @@ footer {
     transition: color 0.2s ease;
 }
 
-/* Efekty při najetí myší na kartu */
 .album-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(46, 90, 68, 0.1);
@@ -904,16 +920,15 @@ footer {
     color: #2e5a44;
 }
 
-/* Přizpůsobení pro mobilní telefony */
 @media (max-width: 768px) {
     .albums-grid {
-        grid-template-columns: 1fr; /* Na mobilu jedno album na řádek přes celou šířku */
+        grid-template-columns: 1fr;
         gap: 20px;
     }
 }
 
 /* ==========================================================================
-   11. SEKCE: ČLENSKÁ SEKCE A PCLOUD ÚLOŽIŠTĚ
+   11. SEKCE: ČLENSKÁ SEKCE
    ========================================================================== */
 .member-login-card {
     max-width: 450px;
@@ -994,7 +1009,6 @@ footer {
     font-weight: 600;
 }
 
-/* Panel po přihlášení */
 .member-welcome-bar {
     display: flex;
     justify-content: space-between;
@@ -1042,7 +1056,6 @@ footer {
     border-color: #f5c2c2;
 }
 
-/* Obálka pro pCloud iframe */
 .pcloud-iframe-container {
     background: #ffffff;
     border: 1px solid #eef2f0;
