@@ -784,6 +784,21 @@ footer {
         text-align: center;
     }
 
+    /* --- OPTIMALIZACE NAVIGACE PRO MOBILNÍ TELEFONY --- */
+    nav {
+        flex-wrap: wrap;           /* Povolí zalomení tlačítek na více řádků */
+        justify-content: center;   /* Zarovná tlačítka na střed */
+        gap: 8px;                  /* Zmenší mezery mezi tlačítky pro úsporu místa */
+        width: 100%;
+    }
+
+    nav a {
+        padding: 8px 12px;         /* Mírně zmenší vnitřní odsazení */
+        font-size: 0.9rem;          /* Jemně zmenší písmo pro lepší vměstnání */
+        background-color: rgba(255, 255, 255, 0.08); /* Jemný tmavý podklad pro čisté mobilní tlačítko */
+        border-radius: 6px;
+    }
+
     .main-banner {
         height: 250px;
     }
