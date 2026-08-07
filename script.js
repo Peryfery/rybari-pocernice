@@ -57,6 +57,47 @@ function parsujTsRangeNaObjekt(rozsahString) {
   };
 }
 
+// Načítání VŠECH AKTUALIT v plném znění na úvodní stránce (index.html)
+async function nactiAktualityIndex() {
+  const container = document.getElementById('aktuality-index-list');
+  if (!container) return;
+
+  const { data, error } = await supabaseClient
+    .from('aktuality')
+    .select('*')
+    .order('datum_publikace', { ascending: false });
+
+  if (error) {
+    console.error('Chyba při načítání aktualit na indexu:', error);
+    container.innerHTML = '<p>Nepodařilo se načíst aktuality. Zkuste to prosím později.</p>';
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    container.innerHTML = '<p>Momentálně zde nejsou žádné příspěvky.</p>';
+    return;
+  }
+
+  container.innerHTML = '';
+  data.forEach(clanek => {
+    const d = new Date(clanek.datum_publikace);
+    const naformatovaneDatum = `${d.getDate()}. ${d.getMonth() + 1}. ${d.getFullYear()}`;
+
+    container.innerHTML += `
+      <article class="full-article-card">
+          <span class="article-meta"><i class="fa-regular fa-calendar"></i> ${naformatovaneDatum}</span>
+          <h2>${clanek.titulek}</h2>
+          
+          ${clanek.obrazek_url ? `<img src="${clanek.obrazek_url}" alt="${clanek.titulek}" class="article-image">` : ''}
+          
+          ${clanek.perex ? `<div class="article-perex">${clanek.perex}</div>` : ''}
+          
+          <div class="article-body">${clanek.obsah}</div>
+      </article>
+    `;
+  });
+}
+
 // Načítání úředních hodin (Původní verze pro index.html - NEMĚNIT)
 async function nactiUredniHodiny() {
   const container = document.getElementById('uredni-hodiny-list');
@@ -272,6 +313,7 @@ async function nactiAtajneVlozPcloudOdkaz() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  nactiAktualityIndex();
   nactiUredniHodiny();
   nactiKalendar();
   nactiVsechnyUredniHodinyKontakty();

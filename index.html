@@ -26,7 +26,6 @@
             <nav>
                 <a href="index.html" class="active">Úvod</a>
                 <a href="detsky_krouzek.html">Dětský kroužek</a>
-                <a href="aktuality.html">Aktuality</a>
 				<a href="fotogalerie.html">Fotogalerie</a>
 				<a href="clenska_sekce.html">Členská sekce</a>
                 <a href="kontakt.html">Kontakt</a>
@@ -45,6 +44,7 @@
     </div>
 
     <main class="container">
+        <!-- 1. Rychlé odkazy -->
         <section class="quick-links">
             <h2 class="section-title">Základní informace</h2>
             <div class="grid-links">
@@ -67,6 +67,15 @@
             </div>
         </section>
 
+        <!-- 2. Kompletní stream aktualit bez prokliků -->
+        <section id="aktuality" class="latest-news-section" style="margin-bottom: 50px;">
+            <h2 class="section-title">Aktuality z naší organizace</h2>
+            <div id="aktuality-index-list" class="archiv-stream">
+                <p>Načítám nejnovější zprávy...</p>
+            </div>
+        </section>
+
+        <!-- 3. Úřední hodiny a Kalendář -->
         <div class="flex-news-cal">
             <section class="news-list">
                 <h2 class="section-title">Nejbližší úřední hodiny</h2>
@@ -86,7 +95,7 @@
                 <div id="kalendar-list">
                     <p>Načítám kalendář akcí...</p>
                 </div>
-</a>
+            </a>
         </div>
     </main>
 
@@ -97,7 +106,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <script src="script.js"></script>
 </body>
 </html>
