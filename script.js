@@ -98,7 +98,7 @@ async function nactiAktualityIndex() {
   });
 }
 
-// Načítání úředních hodin (Původní verze pro index.html - NEMĚNIT)
+// Načítání úředních hodin (max 2 termíny + infobox pro nové členy)
 async function nactiUredniHodiny() {
   const container = document.getElementById('uredni-hodiny-list');
   if (!container) return; 
@@ -122,11 +122,12 @@ async function nactiUredniHodiny() {
     return;
   }
 
+  // 1. ZDE JE OMEZENÍ NA MAXIMÁLNĚ 2 NEJBLIŽŠÍ TERMÍNY
   const budouciHodiny = data
     .map(radek => parsujTsRangeNaObjekt(radek.rozsah))
     .filter(item => item !== null && item.jsDate >= dnes)
     .sort((a, b) => a.jsDate - b.jsDate)
-    .slice(0, 4);
+    .slice(0, 2);
 
   if (budouciHodiny.length === 0) {
     container.innerHTML = '<p>Momentálně nejsou naplánované žádné budoucí úřední hodiny.</p>';
@@ -139,7 +140,9 @@ async function nactiUredniHodiny() {
     const s = item.surove.start;
     const k = item.surove.konec;
 
-    const naformatovaneDatum = `${String(s.den).padStart(2, '0')}. ${String(s.mesic).padStart(2, '0')}.`;
+    const den = s.den;
+    const mesic = mesice[s.mesic - 1];
+
     const startCas = `${String(s.hodina).padStart(2, '0')}:${String(s.minuta).padStart(2, '0')}`;
     
     let finalniCas = startCas;
@@ -149,17 +152,28 @@ async function nactiUredniHodiny() {
     }
 
     container.innerHTML += `
-      <article class="news-entry" style="margin-bottom: 15px; cursor: default;">
-          <div class="news-date">${naformatovaneDatum}</div>
-          <div class="news-content" style="display: flex; align-items: center; padding-left: 10px;">
-              <p style="margin: 0; font-size: 1.1rem; color: #1a3326; font-weight: 600;">
-                  <i class="fa-regular fa-clock" style="color: #2e5a44; margin-right: 8px;"></i> 
-                  ${finalniCas}
-              </p>
+      <div class="cal-item">
+          <div class="cal-date"><strong>${den}</strong><span>${mesic}</span></div>
+          <div class="cal-info">
+              Úřední hodiny
+              <br><small><i class="fa-regular fa-clock"></i> ${finalniCas}</small>
           </div>
-      </article>
+      </div>
     `;
   });
+
+  // 2. TEXTOVÉ POLE PRO PŘIJÍMÁNÍ NOVÝCH ČLENŮ
+  container.innerHTML += `
+    <div style="margin-top: 15px; padding: 12px; background: #ffffff; border-radius: 6px; border: 1px solid #eef2f0; border-left: 3px solid #2e5a44; font-size: 0.85rem; color: #1a3326; line-height: 1.4;">
+        <p style="margin: 0; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; color: #2e5a44; margin-bottom: 4px; letter-spacing: 0.5px;">
+            <i class="fa-solid fa-user-plus" style="margin-right: 5px;"></i> Přijímání nových členů:
+        </p>
+        <p style="margin: 0;">
+            1x měsíčně po telefonické domluvě<br>
+            <strong>(p. Pachta):</strong> <a href="tel:+420777028592" style="color: #2e5a44; font-weight: 700; text-decoration: none;">+420 777 028 592</a>
+        </p>
+    </div>
+  `;
 }
 
 // Načítání kalendáře akcí
@@ -200,7 +214,7 @@ async function nactiKalendar() {
 }
 
 /* ==========================================================================
-   UPRAVENÁ FUNKCE PRO STRÁNKU KONTAKTY (Zobrazuje maximálně 8 následujících dat)
+   UPRAVENÁ FUNKCE PRO STRÁNKU KONTAKTY (Zobrazuje max 8 dat + přehledný infobox)
    ========================================================================== */
 async function nactiVsechnyUredniHodinyKontakty() {
   const container = document.getElementById('uredni-hodiny-kontakty-grid');
@@ -225,7 +239,7 @@ async function nactiVsechnyUredniHodinyKontakty() {
     return;
   }
 
-  // Zde vybere přesně 8 nejbližších budoucích termínů
+  // Vybere přesně 8 nejbližších budoucích termínů
   const budoucichOsemHodin = data
     .map(radek => parsujTsRangeNaObjekt(radek.rozsah))
     .filter(item => item !== null && item.jsDate >= dnes)
@@ -237,7 +251,7 @@ async function nactiVsechnyUredniHodinyKontakty() {
     return;
   }
 
-  // 1. Vytáhneme čas z prvního záznamu pro jednotné zobrazení v záhlaví
+  // 1. Čas z prvního záznamu pro odznáček v záhlaví
   const prvniZaznam = budoucichOsemHodin[0].surove;
   const startCas = `${String(prvniZaznam.start.hodina).padStart(2, '0')}:${String(prvniZaznam.start.minuta).padStart(2, '0')}`;
   
@@ -247,7 +261,7 @@ async function nactiVsechnyUredniHodinyKontakty() {
     finalniCas += ` – ${konecCas}`;
   }
 
-  // 2. Vygenerujeme HTML pro dlaždice (bude jich max 8)
+  // 2. Vygenerování dlaždic s daty
   let dlazdiceHtml = '';
   budoucichOsemHodin.forEach((item, index) => {
     const s = item.surove.start;
@@ -265,7 +279,7 @@ async function nactiVsechnyUredniHodinyKontakty() {
     `;
   });
 
-  // 3. Vykreslení komponenty do kontakt.html
+  // 3. Vykreslení čisté karty s přehledným infoboxem
   container.innerHTML = `
     <div class="hours-card-full">
       <div class="hours-header-full">
@@ -274,13 +288,21 @@ async function nactiVsechnyUredniHodinyKontakty() {
           <div>
             <h3>Úřední hodiny 2026</h3>
             <p>Pro výdej povolenek a administrativu</p>
-            <p>PŘIJÍMÁNÍ NOVÝCH ČLENŮ 1x MESÍČNĚ PO TELEFONICKÉ DOMLUVĚ (p. Pachta): +420 777 028 592</p>
           </div>
         </div>
         <div class="hours-time-badge-full">
           <i class="fa-regular fa-clock"></i> ${finalniCas}
         </div>
       </div>
+
+      <div class="member-info-box">
+          <i class="fa-solid fa-user-plus"></i>
+          <div>
+              <strong>Přijímání nových členů:</strong> 1× měsíčně po telefonické domluvě<br>
+              <span>(p. Pachta): <a href="tel:+420777028592">+420 777 028 592</a></span>
+          </div>
+      </div>
+
       <div class="hours-grid-full">
         ${dlazdiceHtml}
       </div>

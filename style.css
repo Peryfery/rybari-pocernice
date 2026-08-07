@@ -8,7 +8,6 @@
 }
 
 html {
-    /* FIX: Zabírá místo pro scrollbar dopředu, takže stránka neodskakuje vpravo/vlevo */
     scrollbar-gutter: stable;
 }
 
@@ -53,7 +52,7 @@ main {
    2. HLAVIČKA A NAVIGACE
    ========================================================================== */
 header {
-    background-color: #1a3326; /* Tmavá břidlicově zelená */
+    background-color: #1a3326;
     color: #ffffff;
     padding: 15px 0;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -63,7 +62,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; /* Pro přehledné rozbalení na mobilu */
+    flex-wrap: wrap;
 }
 
 .logo-area h1 {
@@ -210,11 +209,15 @@ nav a:hover, nav a.active {
 .flex-news-cal {
     display: flex;
     gap: 30px;
-    align-items: stretch;
+    max-width: 850px;       /* Omezí celkovou šířku sekce */
+    margin: 0 auto;          /* Vycentruje sekci přesně na střed stránky */
+    align-items: flex-start; /* Dynamická výška podle obsahu */
 }
 
+/* Levý sloupec - Úřední hodiny */
 .news-list {
-    flex: 0 0 340px;
+    flex: 1;
+    min-width: 0;
     background-color: #f4f7f5;
     padding: 25px;
     border-radius: 8px;
@@ -227,12 +230,12 @@ nav a:hover, nav a.active {
     width: 100%;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    justify-content: space-between;
 }
 
+/* Pravý sloupec - Kalendář akcí */
 a.clickable-aside {
     flex: 1;
+    min-width: 0;
     background-color: #f4f7f5;
     padding: 25px;
     border-radius: 8px;
@@ -253,137 +256,29 @@ a.clickable-aside .section-title {
     color: #1a3326;
 }
 
-#aktuality-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-bottom: 25px;
-}
-
-.news-entry {
-    display: flex;
-    gap: 20px;
-    background: #ffffff;
-    padding: 15px;
-    border-radius: 6px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    border: 1px solid #eef2f0;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    position: relative; 
-    cursor: pointer;
-}
-
-.news-date {
-    background-color: #2e5a44;
-    color: #ffffff;
-    font-weight: bold;
-    padding: 10px;
-    border-radius: 6px;
-    min-width: 65px;
-    height: fit-content;
-    text-align: center;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.news-content {
-    flex: 1;
-}
-
-.news-content h3 {
-    margin: 0 0 8px 0;
-    font-size: 1.3rem;
-}
-
-.news-content h3 a {
-    color: #1a3326;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.news-entry h3 a::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-}
-
-.news-content p {
-    margin: 0;
-    color: #555555;
-    font-size: 0.95rem;
-}
-
-.news-entry:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(46, 90, 68, 0.1);
-}
-
-.news-entry:hover .news-content h3 a {
-    color: #438463;
-}
-
-.btn-more {
-    display: inline-block;
-    background: #2e5a44;
-    color: #ffffff;
-    text-decoration: none;
-    padding: 12px 24px;
-    border-radius: 4px;
-    font-weight: bold;
-    transition: background 0.2s;
-}
-
-.btn-more:hover {
-    background: #1d3a2b;
-}
-
-.news-entry-hours {
-    display: flex;
-    gap: 20px;
-    background: #ffffff;
-    padding: 15px;
-    border-radius: 6px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    border: 1px solid #eef2f0;
-    margin-bottom: 15px;
-}
-
-.news-content-hours {
-    display: flex;
-    align-items: center;
-    flex: 1;
-}
-
-.news-content-hours p {
-    margin: 0;
-    white-space: nowrap;
-    color: #2c3e50;
-    font-size: 1rem;
-}
-
-.btn-more-hours {
+/* Tlačítko pod úředními hodinami */
+.btn-more, .btn-more-hours {
     display: block;
-    background: #2e5a44;
-    color: #ffffff;
-    text-decoration: none;
-    padding: 12px 24px;
-    border-radius: 4px;
-    font-weight: bold;
-    transition: background 0.2s;
-    margin-top: 20px;
+    width: 100%;
     text-align: center;
+    background: #2e5a44;
+    color: #ffffff !important;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-top: 20px;
+    transition: background 0.2s ease;
+    box-sizing: border-box;
 }
 
-.btn-more-hours:hover {
+.btn-more:hover, .btn-more-hours:hover {
     background: #1d3a2b;
+    color: #ffffff !important;
 }
 
-#kalendar-list {
+/* --- STYLOVÁNÍ MINIKALENDÁŘE A ÚŘEDNÍCH HODIN --- */
+#kalendar-list, #uredni-hodiny-list {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -391,7 +286,7 @@ a.clickable-aside .section-title {
 
 .cal-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 15px;
     padding: 12px 0;
     border-bottom: 1px solid #e0e6e2;
@@ -409,6 +304,7 @@ a.clickable-aside .section-title {
     text-align: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .cal-date strong {
@@ -433,7 +329,8 @@ a.clickable-aside .section-title {
     font-weight: 600;
     color: #1a3326;
     font-size: 1rem;
-    line-height: 1.3;
+    line-height: 1.35;
+    word-break: break-word;
 }
 
 .cal-info small {
@@ -444,7 +341,7 @@ a.clickable-aside .section-title {
 }
 
 /* ==========================================================================
-   6. STRÁNKA: AKTUALITY
+   6. STRÁNKA: AKTUALITY (A STREAM NA ÚVODU)
    ========================================================================== */
 .archiv-stream {
     display: flex;
@@ -596,27 +493,7 @@ a.clickable-card:hover .card-link-hint {
     color: #438463;
 }
 
-.hours-table {
-    width: 100%;
-    margin-top: 15px;
-    border-collapse: collapse;
-}
-
-.hours-table td {
-    padding: 8px 0;
-    color: #4a5568;
-    border-bottom: 1px solid #f0f4f2;
-}
-
-.hours-table tr:last-child td {
-    border-bottom: none;
-}
-
-.hours-table td:first-child {
-    width: 30%;
-    color: #1a3326;
-}
-
+/* --- GRID ÚŘEDNÍCH HODIN V KONTAKTECH --- */
 .hours-card-full {
     background: #ffffff;
     border: 1px solid #eef2f0;
@@ -673,6 +550,38 @@ a.clickable-card:hover .card-link-hint {
     align-items: center;
     gap: 8px;
     border: 1px solid #e0e6e2;
+}
+
+/* Infobox pro přijímání nových členů na stránce kontaktů */
+.member-info-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f4f7f5;
+    border: 1px solid #e0e6e2;
+    border-left: 3px solid #2e5a44;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: #1a3326;
+    line-height: 1.4;
+}
+
+.member-info-box i {
+    font-size: 1.2rem;
+    color: #2e5a44;
+    flex-shrink: 0;
+}
+
+.member-info-box a {
+    color: #2e5a44;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.member-info-box a:hover {
+    text-decoration: underline;
 }
 
 .hours-grid-full {
@@ -763,6 +672,7 @@ footer {
     .flex-news-cal {
         flex-direction: column;
         gap: 30px;
+        max-width: 100%;
     }
     
     .news-list {
@@ -788,12 +698,10 @@ footer {
         text-align: left;
     }
 
-    /* Zobrazíme tlačítko pro hamburger menu */
     .mobile-menu-btn {
         display: block;
     }
 
-    /* Navigace na mobilu: ve výchozím stavu skrytá */
     nav {
         display: none;
         flex-direction: column;
@@ -804,7 +712,6 @@ footer {
         border-top: 1px solid #2e5a44;
     }
 
-    /* Třída pridana přes JS při kliknutí na hamburger */
     nav.nav-open {
         display: flex;
     }
