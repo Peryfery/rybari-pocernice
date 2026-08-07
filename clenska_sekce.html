@@ -6,6 +6,7 @@
     <title>Členská sekce | ČRS MO Horní Počernice</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%231a3326'/><path d='M14 32c12-14 26-10 32 0-6 10-20 14-32 0z' fill='%23ffffff'/><path d='M42 32l12-8v16z' fill='%23ffffff'/><circle cx='23' cy='29' r='2' fill='%231a3326'/></svg>">
 </head>
 <body>
     <header>
@@ -16,6 +17,12 @@
                     <span>MO Horní Počernice</span>
                 </a>
             </div>
+			
+			!-- Tlačítko Hamburger menu pro mobily -->
+            <button class="mobile-menu-btn" onclick="document.querySelector('nav').classList.toggle('nav-open')">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+			
             <nav>
                 <a href="index.html">Úvod</a>
                 <a href="detsky_krouzek.html">Dětský kroužek</a>
