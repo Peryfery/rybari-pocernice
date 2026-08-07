@@ -982,3 +982,91 @@ footer {
         text-align: center;
     }
 }
+
+/* ==========================================================================
+   12. SEKCE BRIGÁDY A ZVÝRAZNĚNÍ
+   ========================================================================== */
+html {
+    scroll-behavior: smooth; /* Zajistí plynulý dojezd po kliknutí na odkaz */
+}
+
+.brigady-section {
+    scroll-margin-top: 30px; /* Odsazení od vrchu po doscrollaování */
+    padding: 15px;
+    border-radius: 8px;
+    transition: background-color 0.5s ease;
+}
+
+/* Animace zvýraznění při prokliku na #brigady */
+.brigady-section:target {
+    animation: highlightBrigady 2.5s ease-in-out;
+}
+
+@keyframes highlightBrigady {
+    0% { background-color: rgba(46, 90, 68, 0.15); }
+    100% { background-color: transparent; }
+}
+
+.section-intro {
+    color: #555555;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto; /* Na mobilech umožní horizontální posun bez rozbití layoutu */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    border: 1px solid #eef2f0;
+    background: #ffffff;
+    margin-bottom: 15px;
+}
+
+.brigady-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.brigady-table th {
+    background-color: #2e5a44;
+    color: #ffffff;
+    padding: 12px 15px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.brigady-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f4f2;
+    color: #2c3e50;
+    white-space: nowrap;
+}
+
+.brigady-table td:first-child {
+    text-align: left;
+    background-color: #fcfdfe;
+}
+
+.brigady-table tr:hover {
+    background-color: #f4f7f5;
+}
+
+.brigady-table .table-total-row td {
+    background-color: #f4f7f5;
+    color: #1a3326;
+}
+
+.brigady-note {
+    font-size: 0.9rem;
+    color: #666666;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.brigady-note i {
+    color: #2e5a44;
+}
