@@ -1070,3 +1070,44 @@ html {
 .brigady-note i {
     color: #2e5a44;
 }
+
+/* ==========================================================================
+   13. SEKCE: DĚTSKÝ KROUŽEK (CELÝ LETÁK)
+   ========================================================================== */
+.poster-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.full-poster-img {
+    max-width: 100%; /* Zásadní pro mobily: obrázek se zmenší, pokud je obrazovka menší */
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1); /* Pěkný stín, aby to nevypadalo jako pěst na oko */
+    border: 1px solid #eef2f0;
+}
+
+.poster-download-wrap {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.btn-download-poster {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #2e5a44;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-download-poster:hover {
+    background: #1a3326;
+    transform: translateY(-2px);
+}
