@@ -9,6 +9,7 @@
 
 html {
     scrollbar-gutter: stable;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -96,7 +97,7 @@ nav a:hover, nav a.active {
     color: #ffffff;
 }
 
-/* Tlačítko Hamburger menu na výchozím rozlišení skryté */
+/* Tlačítko Hamburger menu pro mobily */
 .mobile-menu-btn {
     display: none;
     background: #2e5a44;
@@ -209,9 +210,9 @@ nav a:hover, nav a.active {
 .flex-news-cal {
     display: flex;
     gap: 30px;
-    max-width: 850px;       /* Omezí celkovou šířku sekce */
-    margin: 0 auto;          /* Vycentruje sekci přesně na střed stránky */
-    align-items: flex-start; /* Dynamická výška podle obsahu */
+    max-width: 850px;
+    margin: 0 auto;
+    align-items: flex-start;
 }
 
 /* Levý sloupec - Úřední hodiny */
@@ -277,7 +278,7 @@ a.clickable-aside .section-title {
     color: #ffffff !important;
 }
 
-/* --- STYLOVÁNÍ MINIKALENDÁŘE A ÚŘEDNÍCH HODIN --- */
+/* Stylování minikalendáře a úředních hodin */
 #kalendar-list, #uredni-hodiny-list {
     display: flex;
     flex-direction: column;
@@ -376,12 +377,28 @@ a.clickable-aside .section-title {
     line-height: 1.3;
 }
 
-.article-image {
-    width: 100%;
-    max-height: 450px;
-    object-fit: cover;
-    border-radius: 6px;
-    margin-bottom: 20px;
+/* Obrázek/Plakát v článku: celá výška, 50 % šířky, vycentrovaný */
+.article-image,
+.archiv-stream img,
+#aktuality-index-list .full-article-card img {
+    display: block;
+    width: 50%;
+    max-width: 480px;
+    height: auto;
+    object-fit: contain;
+    margin: 20px auto 25px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border: 1px solid #eef2f0;
+    cursor: zoom-in;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.article-image:hover,
+.archiv-stream img:hover,
+#aktuality-index-list .full-article-card img:hover {
+    transform: scale(1.01);
+    box-shadow: 0 8px 24px rgba(46, 90, 68, 0.15);
 }
 
 .article-perex {
@@ -493,7 +510,7 @@ a.clickable-card:hover .card-link-hint {
     color: #438463;
 }
 
-/* --- GRID ÚŘEDNÍCH HODIN V KONTAKTECH --- */
+/* Grid úředních hodin v kontaktech */
 .hours-card-full {
     background: #ffffff;
     border: 1px solid #eef2f0;
@@ -552,7 +569,7 @@ a.clickable-card:hover .card-link-hint {
     border: 1px solid #e0e6e2;
 }
 
-/* Infobox pro přijímání nových členů na stránce kontaktů */
+/* Infobox pro přijímání nových členů */
 .member-info-box {
     display: flex;
     align-items: center;
@@ -746,6 +763,15 @@ footer {
     
     .full-article-card {
         padding: 20px;
+    }
+
+    /* Na mobilu se obrázek v aktualitách roztáhne na plnou šířku */
+    .article-image,
+    .archiv-stream img,
+    #aktuality-index-list .full-article-card img {
+        width: 100%;
+        max-width: 100%;
+        margin: 15px 0 20px 0;
     }
 }
 
@@ -984,20 +1010,15 @@ footer {
 }
 
 /* ==========================================================================
-   12. SEKCE BRIGÁDY A ZVÝRAZNĚNÍ
+   12. SEKCE: BRIGÁDY A ZVÝRAZNĚNÍ
    ========================================================================== */
-html {
-    scroll-behavior: smooth; /* Zajistí plynulý dojezd po kliknutí na odkaz */
-}
-
 .brigady-section {
-    scroll-margin-top: 30px; /* Odsazení od vrchu po doscrollaování */
+    scroll-margin-top: 30px;
     padding: 15px;
     border-radius: 8px;
     transition: background-color 0.5s ease;
 }
 
-/* Animace zvýraznění při prokliku na #brigady */
 .brigady-section:target {
     animation: highlightBrigady 2.5s ease-in-out;
 }
@@ -1015,7 +1036,7 @@ html {
 
 .table-responsive {
     width: 100%;
-    overflow-x: auto; /* Na mobilech umožní horizontální posun bez rozbití layoutu */
+    overflow-x: auto;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
     border: 1px solid #eef2f0;
@@ -1081,10 +1102,10 @@ html {
 }
 
 .full-poster-img {
-    max-width: 100%; /* Zásadní pro mobily: obrázek se zmenší, pokud je obrazovka menší */
+    max-width: 100%;
     height: auto;
     border-radius: 8px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1); /* Pěkný stín, aby to nevypadalo jako pěst na oko */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     border: 1px solid #eef2f0;
 }
 
@@ -1110,4 +1131,59 @@ html {
 .btn-download-poster:hover {
     background: #1a3326;
     transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   14. VYSKAKOVACÍ MODÁLNÍ OKNO PRO OBRÁZKY (LIGHTBOX / POPUP)
+   ========================================================================== */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    cursor: zoom-out;
+}
+
+.image-modal.active {
+    display: flex;
+    animation: modalFadeIn 0.25s ease;
+}
+
+.image-modal img {
+    max-width: 95vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    cursor: default;
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+    user-select: none;
+}
+
+.modal-close:hover {
+    color: #ffd700;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
