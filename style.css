@@ -29,7 +29,6 @@ main {
     padding: 40px 0;
 }
 
-/* Společný styl pro nadpisy sekcí / stránek */
 .section-title, .page-title {
     font-size: 1.8rem;
     color: #1a3326;
@@ -97,7 +96,6 @@ nav a:hover, nav a.active {
     color: #ffffff;
 }
 
-/* Tlačítko Hamburger menu pro mobily */
 .mobile-menu-btn {
     display: none;
     background: #2e5a44;
@@ -158,16 +156,20 @@ nav a:hover, nav a.active {
 }
 
 /* ==========================================================================
-   4. RYCHLÉ ODKAZY (GRID KARTY NA ÚVODU)
+   4. ROZLOŽENÍ HORNÍHO PANELU (2x2 ODKAZY + DOKUMENTY KE STAŽENÍ)
    ========================================================================== */
-.quick-links {
-    margin-bottom: 50px;
+.top-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 30px;
+    align-items: start;
 }
 
-.grid-links {
+/* Levý sloupec: mřížka 2x2 */
+.grid-links-2x2 {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
 }
 
 .link-card {
@@ -176,32 +178,160 @@ nav a:hover, nav a.active {
     align-items: center;
     justify-content: center;
     background: #ffffff;
-    padding: 30px 20px;
+    padding: 22px 15px;
     border-radius: 8px;
     text-decoration: none;
     color: #1a3326;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     border: 1px solid #eef2f0;
     transition: all 0.2s ease;
+    text-align: center;
 }
 
 .link-card img {
-    width: 64px;
-    height: 64px;
-    margin-bottom: 15px;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 12px;
     object-fit: contain;
 }
 
 .link-card span {
     font-weight: 700;
-    font-size: 1.1rem;
-    text-align: center;
+    font-size: 1.05rem;
+    line-height: 1.3;
 }
 
 .link-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
     box-shadow: 0 8px 15px rgba(46, 90, 68, 0.12);
     border-color: #2e5a44;
+}
+
+/* Pravý sloupec: Panel dokumentů */
+.downloads-card {
+    background-color: #f4f7f5;
+    border-radius: 8px;
+    border-left: 4px solid #2e5a44;
+    padding: 24px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    border-top: 1px solid #eef2f0;
+    border-right: 1px solid #eef2f0;
+    border-bottom: 1px solid #eef2f0;
+    display: flex;
+    flex-direction: column;
+}
+
+.downloads-intro {
+    font-size: 0.95rem;
+    color: #555555;
+    margin-bottom: 15px;
+}
+
+.download-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.download-list li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #ffffff;
+    padding: 12px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    border: 1px solid #e0e6e2;
+    transition: all 0.2s ease;
+}
+
+.download-list li a:hover {
+    border-color: #2e5a44;
+    box-shadow: 0 3px 8px rgba(46, 90, 68, 0.1);
+    transform: translateX(3px);
+}
+
+.download-list .file-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.download-list .file-icon.red {
+    color: #c0392b;
+}
+
+.download-list .file-icon.green {
+    color: #2e5a44;
+}
+
+.download-list .file-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.download-list .file-text strong {
+    color: #1a3326;
+    font-size: 0.95rem;
+    line-height: 1.25;
+}
+
+.download-list .file-text small {
+    color: #777777;
+    font-size: 0.8rem;
+    margin-top: 2px;
+}
+
+.download-list .download-action {
+    color: #2e5a44;
+    font-size: 1rem;
+    opacity: 0.7;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.download-list li a:hover .download-action {
+    opacity: 1;
+    transform: scale(1.15);
+}
+
+/* Tlačítko na celý pCloud archiv */
+.btn-all-pcloud {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #2e5a44;
+    color: #ffffff !important;
+    text-decoration: none;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background 0.2s ease;
+    text-align: center;
+}
+
+.btn-all-pcloud:hover {
+    background: #1a3326;
+}
+
+/* Responzivita pro nový panel */
+@media (max-width: 992px) {
+    .top-dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+}
+
+@media (max-width: 550px) {
+    .grid-links-2x2 {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ==========================================================================
@@ -257,7 +387,6 @@ a.clickable-aside .section-title {
     color: #1a3326;
 }
 
-/* Tlačítko pod úředními hodinami */
 .btn-more, .btn-more-hours {
     display: block;
     width: 100%;
@@ -278,7 +407,6 @@ a.clickable-aside .section-title {
     color: #ffffff !important;
 }
 
-/* Stylování minikalendáře a úředních hodin */
 #kalendar-list, #uredni-hodiny-list {
     display: flex;
     flex-direction: column;
@@ -377,7 +505,6 @@ a.clickable-aside .section-title {
     line-height: 1.3;
 }
 
-/* Obrázek/Plakát v článku: celá výška, 50 % šířky, vycentrovaný */
 .article-image,
 .archiv-stream img,
 #aktuality-index-list .full-article-card img {
@@ -510,7 +637,6 @@ a.clickable-card:hover .card-link-hint {
     color: #438463;
 }
 
-/* Grid úředních hodin v kontaktech */
 .hours-card-full {
     background: #ffffff;
     border: 1px solid #eef2f0;
@@ -569,7 +695,6 @@ a.clickable-card:hover .card-link-hint {
     border: 1px solid #e0e6e2;
 }
 
-/* Infobox pro přijímání nových členů */
 .member-info-box {
     display: flex;
     align-items: center;
@@ -682,6 +807,13 @@ footer {
     border-top: 3px solid #2e5a44;
 }
 
+.footer-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
 /* ==========================================================================
    9. RESPONSIVITA (MEDIA QUERIES PRO MOBILY A TABLETY)
    ========================================================================== */
@@ -765,7 +897,6 @@ footer {
         padding: 20px;
     }
 
-    /* Na mobilu se obrázek v aktualitách roztáhne na plnou šířku */
     .article-image,
     .archiv-stream img,
     #aktuality-index-list .full-article-card img {
