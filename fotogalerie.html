@@ -37,7 +37,7 @@
     <main class="container page-content">
         <h2 class="page-title">Fotogalerie</h2>
         <p style="margin-bottom: 30px; color: #555555;">
-            Nahlédněte do činnosti naší místní organizace. Kliknutím na album otevřete prohlížeč fotografií.
+            Nahlédněte do činnosti naší místní organizace. Kliknutím na album otevřete prohlížeč fotografií a videí.
         </p>
         
         <div id="alba-grid" class="albums-grid">
@@ -59,14 +59,20 @@
         const CLOUDINARY_CLOUD_NAME = 'duazuetfa';
         const CLOUDINARY_API_KEY = '282584267616712';
 
-        // Tady máš své správně otagované položky
+        // Fotoalba (tagy v Cloudinary)
         const SEZNAM_ALB = [
             'galerie-České_ryby',
             'galerie-Cisteni_Reviru_2026'
         ];
 
-        async function nactiFotkyProTag(tag) {
-            const url = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/list/${tag}.json`;
+        // Videa (tagy v Cloudinary, nahraná jako "video")
+        const SEZNAM_VIDEI = [
+            'video-Výlov_Barbora_2026'
+        ];
+
+        // typ = 'image' nebo 'video'
+        async function nactiZdrojeProTag(tag, typ) {
+            const url = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/${typ}/list/${encodeURIComponent(tag)}.json`;
             try {
                 const response = await fetch(url);
                 if (!response.ok) return [];
@@ -78,6 +84,11 @@
             }
         }
 
+        function hezkyNazev(tag) {
+            const text = tag.replace(/^(galerie|video)-/, '').replace(/[_-]/g, ' ');
+            return text.charAt(0).toUpperCase() + text.slice(1);
+        }
+
         async function inicializujGalerii() {
             const gridProAlba = document.getElementById('alba-grid');
             const skrytyKontejner = document.getElementById('skryte-fotky');
@@ -87,19 +98,20 @@
 
             let nalezenaNejakaFotka = false;
 
+            // ---------- FOTOALBA ----------
             for (const tag of SEZNAM_ALB) {
-                const fotky = await nactiFotkyProTag(tag);
+                const fotky = await nactiZdrojeProTag(tag, 'image');
                 if (fotky.length === 0) continue;
                 nalezenaNejakaFotka = true;
 
                 const cistyNazevAlba = tag.replace('galerie-', '').replace(/_/g, ' ');
 
-                // 1. Vezmeme první fotku jako "titulní přebal" alba
+                // 1. První fotka = titulní přebal alba
                 const prvniFoto = fotky[0];
                 const nahledKartyUrl = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/w_500,h_375,c_fill,q_auto,f_auto/v${prvniFoto.version}/${prvniFoto.public_id}.${prvniFoto.format}`;
                 const plnaPrvniFotoUrl = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto,f_auto/v${prvniFoto.version}/${prvniFoto.public_id}.${prvniFoto.format}`;
 
-                // 2. Vytvoříme viditelnou kartu alba v mřížce (odkaz spouští GLightbox)
+                // 2. Viditelná karta alba (odkaz spouští GLightbox)
                 const albumKarta = document.createElement('a');
                 albumKarta.href = plnaPrvniFotoUrl;
                 albumKarta.className = 'glightbox album-card';
@@ -116,8 +128,7 @@
                 `;
                 gridProAlba.appendChild(albumKarta);
 
-                // 3. Všechny OSTATNÍ fotky z tohoto alba skryjeme do pozadí stránky, 
-                // aby se načetly do stejné galerie v GLightboxu, až uživatel klikne na kartu.
+                // 3. Ostatní fotky skryjeme do pozadí, aby se načetly do stejné galerie
                 for (let i = 1; i < fotky.length; i++) {
                     const foto = fotky[i];
                     const plnaUrl = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto,f_auto/v${foto.version}/${foto.public_id}.${foto.format}`;
@@ -126,6 +137,47 @@
                     skrytyOdkaz.href = plnaUrl;
                     skrytyOdkaz.className = 'glightbox';
                     skrytyOdkaz.setAttribute('data-gallery', tag);
+                    skrytyKontejner.appendChild(skrytyOdkaz);
+                }
+            }
+
+            // ---------- VIDEA ----------
+            for (const tag of SEZNAM_VIDEI) {
+                const videa = await nactiZdrojeProTag(tag, 'video');
+                if (videa.length === 0) continue;
+                nalezenaNejakaFotka = true;
+
+                const nazev = hezkyNazev(tag);
+
+                const videoUrl = (v) => `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/q_auto/v${v.version}/${v.public_id}.mp4`;
+                // Titulní obrázek = snímek z videa (so_1 = první vteřina)
+                const posterUrl = (v) => `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/so_1,w_500,h_375,c_fill,q_auto/v${v.version}/${v.public_id}.jpg`;
+
+                const prvni = videa[0];
+
+                const videoKarta = document.createElement('a');
+                videoKarta.href = videoUrl(prvni);
+                videoKarta.className = 'glightbox album-card';
+                videoKarta.setAttribute('data-gallery', tag);
+                videoKarta.setAttribute('data-type', 'video');
+
+                videoKarta.innerHTML = `
+                    <div class="album-card-image">
+                        <img src="${posterUrl(prvni)}" alt="${nazev}" loading="lazy">
+                        <div class="album-card-badge"><i class="fa-solid fa-video"></i> ${videa.length}</div>
+                    </div>
+                    <div class="album-card-info">
+                        <h3>${nazev}</h3>
+                    </div>
+                `;
+                gridProAlba.appendChild(videoKarta);
+
+                for (let i = 1; i < videa.length; i++) {
+                    const skrytyOdkaz = document.createElement('a');
+                    skrytyOdkaz.href = videoUrl(videa[i]);
+                    skrytyOdkaz.className = 'glightbox';
+                    skrytyOdkaz.setAttribute('data-gallery', tag);
+                    skrytyOdkaz.setAttribute('data-type', 'video');
                     skrytyKontejner.appendChild(skrytyOdkaz);
                 }
             }
@@ -140,7 +192,8 @@
                 selector: '.glightbox',
                 loop: true,
                 openEffect: 'zoom',
-                closeEffect: 'zoom'
+                closeEffect: 'zoom',
+                autoplayVideos: true
             });
         }
 
