@@ -5,6 +5,14 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const mesice = ['led', 'úno', 'bře', 'dub', 'kvě', 'čen', 'čec', 'srp', 'zář', 'říj', 'lis', 'pro'];
 
+// Dnešní datum ve tvaru RRRR-MM-DD podle místního času (ne UTC)
+function dnesLokalneISO() {
+  const d = new Date();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${d.getFullYear()}-${mm}-${dd}`;
+}
+
 // Kompletně přepsané, neprůstřelné parsování PostgreSQL tsrange stringu
 function parsujTsRangeNaObjekt(rozsahString) {
   if (!rozsahString) return null;
@@ -18,7 +26,7 @@ function parsujTsRangeNaObjekt(rozsahString) {
 
   if (!startStr) return null;
 
-  // 2. Regulární výraz, který bezpečně vytáhne: Rok-Měsíc-Den (mezera oder T) Hodina:Minuta
+  // 2. Regulární výraz, který bezpečně vytáhne: Rok-Měsíc-Den (mezera nebo T) Hodina:Minuta
   const regex = /(\d{4})-(\d{2})-(\d{2})[\sT](\d{2}):(\d{2})/;
   
   const startMatch = startStr.match(regex);
@@ -57,14 +65,18 @@ function parsujTsRangeNaObjekt(rozsahString) {
   };
 }
 
-// Načítání VŠECH AKTUALIT v plném znění na úvodní stránce (index.html)
+// Načítání AKTUÁLNÍCH aktualit v plném znění na úvodní stránce (index.html)
+// Zobrazí jen články, které nemají platne_do, nebo jejichž platne_do je dnes či v budoucnu
 async function nactiAktualityIndex() {
   const container = document.getElementById('aktuality-index-list');
   if (!container) return;
 
+  const dnes = dnesLokalneISO();
+
   const { data, error } = await supabaseClient
     .from('aktuality')
     .select('*')
+    .or(`platne_do.is.null,platne_do.gte.${dnes}`)
     .order('datum_publikace', { ascending: false });
 
   if (error) {
